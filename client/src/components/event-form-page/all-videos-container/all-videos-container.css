@@ -1,0 +1,32 @@
+.all-videos-container{
+    height: 100%;
+    overflow-y: auto;
+}
+
+.all-videos-container > table{
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+.all-videos-container > table > thead{
+    background-color: rgb(137, 136, 136);
+    color: #ffff;
+}
+
+.all-videos-container > table > thead > th{
+    padding: 5px 10px;
+}
+
+.all-videos-container > table > tbody > tr{
+    border: 1px solid grey;
+}
+
+.all-videos-container > table > tbody > tr > td{
+    padding: 5px 10px;
+}
+
+.delete-video-link-btn{
+    border: none;
+    background-color: transparent;
+}

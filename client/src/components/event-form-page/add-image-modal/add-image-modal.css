@@ -1,0 +1,44 @@
+.add-image-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-image-ul{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.add-image-ul > li{
+    list-style: none;
+}
+
+.add-image-ul > li > img{
+    width: 200px;
+    height: 150px;
+}
+
+.add-image-container > section:nth-child(2){
+    box-shadow: inset 1px 1px 5px -1px rgba(0, 0, 0, 0.5);
+    height: 450px;
+    width: 100%;
+    padding: 15px;
+    margin-top: 25px;
+    overflow-y: auto;
+}
+
+.add-image-container > section >button{
+    margin-top: 50px;
+    background-color: #303030;
+    color: #ffff;
+    padding: 3px 25px 6px 25px;
+    border: none;
+}
+
+.add-image-container > section > button:hover{
+    background-color: #4a4a4a;
+}

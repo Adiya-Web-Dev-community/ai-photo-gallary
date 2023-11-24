@@ -1,0 +1,64 @@
+.appnavbar-wrapper {
+    height: 4rem;
+    background-color: #1f282f;
+    text-align: center;
+    position: fixed;
+    top:0%;
+    width:100%;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 25px;
+    /* margin-top: 1rem; */
+}
+
+.appnavbar-wrapper h5:first-child{
+    cursor: pointer;
+}
+
+.appnavbar-wrapper h5 {
+    color: #ffff;
+}
+
+.appnavbar-wrapper h6 {
+    color: #ffff;
+    font-size: 15px;
+}
+
+.appbar-right-side-icons{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.appbar-right-side-icons > p:first-child{
+    border: 1px solid #ffff;
+    height: 5rem;
+    width: 5rem;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffff;
+    border-radius: 50%;
+}
+
+.appbar-right-side-icons > p:last-child{
+    /* border: 1px solid #ffff; */
+    margin-left: 25px;
+}
+
+.appbar-home-icon{
+    color: #ffff;
+    /* border: 1px solid #ffff; */
+    border-radius: 50%;
+    font-size: 1.5rem;
+    padding: 0.1rem 0.5rem 0.5rem 0.5rem;
+}
+
+.appbar-hamburger-icon{
+    color: #ffff;
+    font-size: 2.5rem;
+    padding: 1rem 1rem;
+}

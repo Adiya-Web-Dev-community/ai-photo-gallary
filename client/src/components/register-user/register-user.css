@@ -1,0 +1,308 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredericka+the+Great&family=Metal+Mania&display=swap');
+
+.signin-wrapper {
+    border: 2px solid rgb(255, 255, 255);
+    width: 500px;
+    padding: 2rem 1rem;
+    margin: 8rem auto;
+    box-shadow: 2px 2px 20px 1px rgb(187, 187, 187);
+    border-style: outset;
+    height: 80vh;
+}
+
+.signin-wrapper h4 {
+    letter-spacing: 2px;
+    text-align: center;
+    font-family: 'Fredericka the Great';
+}
+
+.signin-wrapper h4::first-letter {
+    font-size: 1.8rem;
+}
+
+.signin-wrapper>h5 {
+    text-align: center;
+    color: grey;
+    margin-top: 1rem;
+}
+
+
+
+
+.signin-wrapper .form-wrapper {
+    /* border: 1px solid red; */
+    height: 20rem;
+}
+
+
+.signin-wrapper .form-wrapper .mobilenobtn-wrapper,
+.signin-wrapper .form-wrapper .googlesignin-wrapper {
+    /* border:1px solid black; */
+    display: flex;
+    justify-content: center;
+}
+
+.signin-wrapper .form-wrapper .mobilenobtn-wrapper .btn {
+    background-color: transparent;
+    box-shadow: 2px 2px 20px 1px rgb(187, 187, 187);
+    border: 1px solid white;
+    border-style: inset;
+    color: black;
+    width: 80%;
+    height: 3rem;
+    border-radius: 2rem;
+    margin-top: 3rem;
+}
+
+.signin-wrapper .form-wrapper .googlesignin-wrapper .btn {
+    background-color: transparent;
+    box-shadow: 2px 2px 20px 1px rgb(187, 187, 187);
+    border: 1px solid white;
+    border-style: inset;
+    color: black;
+    width: 80%;
+    height: 3rem;
+    border-radius: 2rem;
+    margin-top: 1rem;
+}
+
+.signin-wrapper .form-wrapper .or-line-wrapper .line-wrapper {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    height: 2rem;
+    position: relative;
+    /* background-color: red; */
+    display: flex;
+
+}
+
+.signin-wrapper .form-wrapper .or-line-wrapper .line-wrapper .line1 {
+    border: 1px solid rgb(213, 212, 212);
+    width: 43%;
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    background-color: rgb(213, 212, 212);
+    /* Adjust to your desired line color */
+    transform: translateY(-50%);
+}
+
+.signin-wrapper .form-wrapper .or-line-wrapper .line-wrapper .line2 {
+    border: 0.1px solid rgb(213, 212, 212);
+    width: 47%;
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    background-color: rgb(213, 212, 212);
+    /* Adjust to your desired line color */
+    transform: translateY(-50%);
+}
+
+.signin-wrapper .form-wrapper .or-line-wrapper .line-wrapper .text {
+    position: absolute;
+    left: 45%;
+    top: 6%;
+    z-index: 10;
+    color: black;
+    letter-spacing: 2px;
+    font-family: 'sans-serif';
+}
+
+
+/* mobile no form */
+.signin-wrapper form .icon-wrapper {
+    /* border:1px solid black; */
+    display: flex;
+    justify-content: right;
+}
+
+.signin-wrapper form .icon-wrapper .cross-icon:hover {
+    transform: scale(1.2);
+    color: red;
+}
+
+.signin-wrapper form .mobileno-input-wrapper {
+    /* border:1px solid black; */
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.signin-wrapper form .mobileno-input-wrapper .mobileno-inputbox {
+    width: 90%;
+    border-radius: 0px;
+}
+
+
+
+
+.signin-wrapper form .otp-input-wrapper {
+    /* border:1px solid black; */
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.signin-wrapper form .otp-input-wrapper .otp-inputbox {
+    width: 90%;
+    border-radius: 0px;
+}
+
+.signin-wrapper .sendotpbtn-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 4rem;
+    padding-top: 2rem;
+
+}
+
+.signin-wrapper  .sendotpbtn-wrapper .btn {
+    background-color: transparent;
+    box-shadow: 2px 2px 20px 1px rgb(187, 187, 187);
+    border: 2px solid white;
+    border-style: inset;
+    color: black;
+    width: 80%;
+    height: 3rem;
+    border-radius: 2rem;
+    margin-top: 3rem;
+}
+
+register-btn{
+   margin: auto;
+}
+
+
+@media only screen and (max-width:900px) {
+    .signin-wrapper {
+        width: 100%;
+        padding: 1rem;
+
+    }
+
+
+
+    .signin-wrapper .form-wrapper .mobilenobtn-wrapper,
+    .signin-wrapper .form-wrapper .googlesignin-wrapper {
+        /* border:1px solid black; */
+        display: flex;
+        justify-content: center;
+    }
+
+    .signin-wrapper .form-wrapper .mobilenobtn-wrapper .btn {
+        background-color: transparent;
+        box-shadow: 2px 2px 20px 1px rgb(187, 187, 187);
+        border: 1px solid white;
+        border-style: inset;
+        color: black;
+        width: 95%;
+        height: 3rem;
+        border-radius: 2rem;
+        margin-top: 3rem;
+        padding: 0.5rem 0.2rem;
+
+    }
+
+    .signin-wrapper .form-wrapper .googlesignin-wrapper .btn {
+        background-color: transparent;
+        box-shadow: 2px 2px 20px 1px rgb(187, 187, 187);
+        border: 1px solid white;
+        border-style: inset;
+        color: black;
+        width: 95%;
+        height: 3rem;
+        border-radius: 2rem;
+        margin-top: 1rem;
+        padding: 0.5rem 0.2rem;
+
+    }
+
+    .signin-wrapper .form-wrapper .or-line-wrapper .line-wrapper {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        height: 2rem;
+        position: relative;
+        /* background-color: red; */
+        display: flex;
+
+    }
+
+    .signin-wrapper .form-wrapper .or-line-wrapper .line-wrapper .line1 {
+        border: 1px solid rgb(213, 212, 212);
+        width: 35%;
+        position: absolute;
+        top: 50%;
+        left: 0%;
+        background-color: rgb(213, 212, 212);
+        /* Adjust to your desired line color */
+        transform: translateY(-50%);
+    }
+
+    .signin-wrapper .form-wrapper .or-line-wrapper .line-wrapper .line2 {
+        border: 0.1px solid rgb(213, 212, 212);
+        width: 35%;
+        position: absolute;
+        top: 50%;
+        right: 0%;
+        background-color: rgb(213, 212, 212);
+        /* Adjust to your desired line color */
+        transform: translateY(-50%);
+    }
+
+    .signin-wrapper .form-wrapper .or-line-wrapper .line-wrapper .text {
+        position: absolute;
+        left: 45%;
+        top: 6%;
+        z-index: 10;
+        color: black;
+        letter-spacing: 2px;
+        font-family: 'sans-serif';
+    }
+
+    /* mobile no form */
+    .signin-wrapper form .icon-wrapper {
+        /* border:1px solid black; */
+        display: flex;
+        justify-content: right;
+    }
+
+    .signin-wrapper form .icon-wrapper .cross-icon:hover {
+        transform: scale(1.2);
+        color: red;
+    }
+
+    .signin-wrapper form .mobileno-input-wrapper {
+        /* border:1px solid black; */
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+
+    .signin-wrapper form .mobileno-input-wrapper .mobileno-inputbox {
+        width: 90%;
+        border-radius: 0px;
+    }
+
+    .signin-wrapper form .sendotpbtn-wrapper {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 4rem;
+        padding-top: 2rem;
+
+    }
+
+    .signin-wrapper form .sendotpbtn-wrapper .btn {
+        background-color: transparent;
+        box-shadow: 2px 2px 20px 1px rgb(187, 187, 187);
+        border: 2px solid white;
+        border-style: inset;
+        color: black;
+        width: 95%;
+        height: 3rem;
+        border-radius: 2rem;
+        margin-top: 3rem;
+    }
+
+
+
+}

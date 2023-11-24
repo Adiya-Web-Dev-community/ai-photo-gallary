@@ -1,0 +1,29 @@
+.image-three-dots {
+    position: absolute;
+    top: 10px;
+    left: 90%;
+    color: white;
+    cursor: pointer;
+}
+
+.unpublished-images-more-modal{
+    
+}
+
+.publish-delete-image{
+    position: absolute;
+    width: 100%;
+    top: 83%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.publish-delete-image > p > button {
+    border: none;
+    font-size: 12px;
+    padding: 3px 5px;
+}
+
+.publish-delete-image > p > button:hover {
+    background-color: rgb(121, 250, 250);
+}

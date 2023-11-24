@@ -1,0 +1,38 @@
+.create-event-pop-up-header{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.create-event-pop-up-header > h4:last-child{
+    cursor: pointer;
+}
+
+.create-event-pop-up-main{
+    margin-top: 50px;
+}
+
+.create-event-pop-up-main section{
+    margin-top: 25px;
+}
+
+.create-event-pop-up-main section label{
+    margin-right: 25px;
+}
+
+.create-event-pop-up-save-btn-container{
+    margin-top: 50px;
+    text-align: center;
+}
+
+.create-event-pop-up-save-btn-container button{
+    padding: 5px 25px 10px 25px;
+    color: #ffff;
+    background-color: black;
+    border: none;
+    border-radius: 5px;
+}
+
+.create-event-pop-up-save-btn-container button:hover{
+    background-color: rgb(23, 23, 23);
+}

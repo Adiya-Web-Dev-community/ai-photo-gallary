@@ -1,0 +1,512 @@
+.gallary-wrapper {
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid black; */
+    padding: 0rem 2rem 1rem 2rem;
+}
+
+.gallary-wrapper-row1 {
+    display: flex;
+    justify-content: space-between;
+    height: 4rem;
+    box-shadow: 1px 1px 1px 1px grey;
+}
+
+.gallary-wrapper-row1 .gallary-wrapper-btn-wrapper {
+    width: 70%;
+    /* border: 1px solid red; */
+    padding-top: 1rem;
+    display: flex;
+    margin-left: 1rem;
+    display: flex;
+}
+
+.gallary-wrapper-row1 .gallary-wrapper-btn-wrapper div {
+    /* border: 1px solid black; */
+    width: 20%;
+}
+
+.gallary-wrapper-row1 .gallary-wrapper-btn-wrapper div:first-child input[type='file'] {
+    color: rgba(0, 0, 0, 0)
+}
+
+.gallary-wrapper-row1 .gallary-wrapper-btn-wrapper div:first-child input::file-selector-button {
+    width: 60%;
+    height: 2.5rem;
+    text-align: center;
+    font-weight: bold;
+    border: 2px solid white;
+    border-radius: 1rem;
+    border-style: inset;
+}
+
+.gallary-wrapper-row1 .gallary-wrapper-btn-wrapper div:first-child input::file-selector-button:hover {
+    background-color: lightgrey;
+}
+
+.gallary-wrapper-row1 .gallary-wrapper-btn-wrapper div:nth-child(2) button {
+    width: 80%;
+    height: 2.5rem;
+    text-align: center;
+    font-weight: bold;
+    border: 2px solid white;
+    border-radius: 1rem;
+    border-style: inset;
+}
+
+.gallary-wrapper-row1 .gallary-wrapper-btn-wrapper div:nth-child(2) button:hover {
+    background-color: lightgrey;
+}
+
+.gallary-wrapper-row1 .gallary-wrapper-btn-wrapper div:last-child button {
+    width: 50%;
+    height: 2.5rem;
+    text-align: center;
+
+
+}
+
+
+
+.gallary-wrapper-username-wrapper1 {
+    width: 100%;
+    text-align: center;
+    display: none;
+}
+
+.gallary-wrapper-username-wrapper2 {
+    width: 30%;
+    text-align: center;
+    display: block;
+}
+
+.gallary-wrapper {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 2rem;
+    /* border: 1px solid black; */
+}
+
+.gallary-wrapper .col1 {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid black; */
+
+}
+
+.gallary-wrapper .col1 .options {
+    display: flex;
+    justify-content: space-around;
+    width: 60%;
+    height: 2rem;
+    margin: 0.5rem auto;
+    font-size: 0.9rem;
+    padding-top: 0.5rem;
+    /* border: 1px solid black; */
+}
+
+.gallary-wrapper .row2 {
+    border: 3px solid rgb(219, 218, 218);
+    border-style: outset;
+    padding: 1rem 0.5rem 2rem 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+}
+
+.gallary-wrapper .row2 div {
+    width: 24%;
+    height: 10rem;
+    /* border: 1px solid black; */
+}
+
+.gallary-wrapper .row2 div img {
+    width: 100%;
+    height: 100%;
+    /* border: 1px solid black; */
+    transition: 1s;
+}
+
+.gallary-wrapper .row2 div img:hover {
+    transform: scale(1.1);
+    opacity: 0.7;
+}
+
+
+.gallary-wrapper .row2 .upload-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-top: 12rem;
+    margin-bottom: 11rem;
+    opacity: 0.5;
+    border: 0rem;
+}
+
+.gallary-wrapper .row2 .upload-icon h6 {
+    /* border:1px solid black; */
+}
+
+.gallary-wrapper .row2 .upload-icon .icon {
+    padding-left: 1rem;
+}
+
+.gallary-wrapper .col2 {
+    width: 25%;
+    margin: 0rem auto;
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid black; */
+
+}
+
+.gallary-wrapper .col2 .cover-image {
+    height: 14rem;
+    padding: 0.5rem;
+    text-align: center;
+    border-style: inset;
+    border: 3px solid rgb(219, 218, 218);
+    margin-top: 0.2rem;
+}
+
+.gallary-wrapper .col2 .edit-description {
+    height: 7rem;
+    padding: 0.5rem;
+    text-align: center;
+    margin-top: 0.1rem;
+    border-style: inset;
+    border: 3px solid rgb(219, 218, 218);
+}
+
+.gallary-wrapper .col2 .event-code {
+    height: 4rem;
+    padding: 0.5rem;
+    text-align: center;
+    margin-top: 0.1rem;
+    border-style: inset;
+    border: 3px solid rgb(219, 218, 218);
+
+}
+
+.gallary-wrapper .col2 .btn-wrapper {
+    height: fit-content;
+    padding: 1rem 0.5rem;
+    text-align: center;
+    margin-top: 0.1rem;
+    border-style: inset;
+    border: 3px solid rgb(219, 218, 218);
+}
+
+
+
+.gallary-wrapper .col2 .btn-wrapper div:first-child button {
+    height: 3rem;
+    width: 10rem;
+    border-radius: 1rem;
+    border: 3px solid white;
+    border-style: inset;
+}
+
+.gallary-wrapper .col2 .btn-wrapper div:last-child {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+}
+
+.gallary-wrapper .col2 .btn-wrapper div:last-child button {
+    height: 3rem;
+    width: 10rem;
+    border-radius: 1rem;
+    border: 3px solid white;
+    border-style: inset;
+}
+
+
+.gallary-wrapper .col2 .btn-wrapper div:first-child button:hover,
+.gallary-wrapper .col2 .btn-wrapper div:last-child button:hover {
+    background-color: rgb(225, 225, 225);
+}
+
+
+    .gallary-wrapper .col2 .delete-event {
+    height: 5rem;
+    padding: 0.5rem;
+    text-align: center;
+    border-style: inset;
+    border: 3px solid rgb(219, 218, 218);
+}
+
+
+
+
+@media only screen and (max-width:900px) {
+    .gallary-wrapper {
+        display: flex;
+        flex-direction: column;
+        /* border: 1px solid black; */
+        padding: 0rem 2rem 1rem 2rem;
+    }
+
+    .gallary-wrapper-row1 {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: fit-content;
+        box-shadow: 1px 1px 1px 1px grey;
+        padding-bottom: 2rem;
+        margin: auto;
+        margin-left: 1rem;
+    }
+
+    .gallary-wrapper-row1 .gallary-wrapper-btn-wrapper {
+        width: 100%;
+        /* border: 1px solid red; */
+        padding-top: 1rem;
+        display: flex;
+        margin-left: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .gallary-wrapper-row1 .gallary-wrapper-btn-wrapper div {
+        /* border: 1px solid black; */
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .gallary-wrapper-row1 .gallary-wrapper-btn-wrapper div:first-child input[type='file'] {
+        color: rgba(0, 0, 0, 0)
+    }
+
+    .gallary-wrapper-row1 .gallary-wrapper-btn-wrapper div:first-child input::file-selector-button {
+        width: 85%;
+        height: 2.5rem;
+        text-align: center;
+        font-weight: bold;
+        border: 2px solid white;
+        border-radius: 1rem;
+        border-style: inset;
+    }
+
+    .gallary-wrapper-row1 .gallary-wrapper-btn-wrapper div:first-child input::file-selector-button:hover {
+        background-color: lightgrey;
+    }
+
+    .gallary-wrapper-row1 .gallary-wrapper-btn-wrapper div:nth-child(2) button {
+        width: 90%;
+        height: 2.5rem;
+        text-align: center;
+        font-weight: bold;
+        border: 2px solid white;
+        border-radius: 1rem;
+        border-style: inset;
+    }
+
+    .gallary-wrapper-row1 .gallary-wrapper-btn-wrapper div:nth-child(2) button:hover {
+        background-color: lightgrey;
+    }
+
+    .gallary-wrapper-row1 .gallary-wrapper-btn-wrapper div:last-child {
+        display: flex;
+        justify-content: center;
+        /* border:1px solid black; */
+        width: 90%;
+        margin-top: 1rem;
+    }
+
+    .gallary-wrapper-row1 .gallary-wrapper-btn-wrapper div:last-child button {
+        width: 40%;
+        height: 2.5rem;
+        text-align: center;
+    }
+
+    .gallary-wrapper-username-wrapper1 {
+        width: 100%;
+        text-align: center;
+        display: block;
+        padding-top: 1rem;
+    }
+
+    .gallary-wrapper-username-wrapper2 {
+        width: 30%;
+        text-align: center;
+        display: none;
+    }
+
+
+
+
+    /*  */
+
+    .gallary-wrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+        margin-left: 1rem;
+        padding: 0rem;
+        padding-bottom: 2rem;
+        /* border: 1px solid black; */
+    }
+
+    .gallary-wrapper .col1 {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        /* border: 1px solid black; */
+
+    }
+
+    .gallary-wrapper .col1 .options {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        height: 2rem;
+        margin: 0rem 0rem;
+        font-size: 0.9rem;
+        padding-top: 0rem;
+        margin-top: 1rem;
+        /* border: 1px solid black; */
+    }
+
+    .gallary-wrapper .row2 {
+        border: 3px solid rgb(219, 218, 218);
+        border-style: outset;
+        padding: 1rem 0.5rem 2rem 0.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+
+    }
+
+    .gallary-wrapper .row2 div {
+        width: 100%;
+        height: 10rem;
+        /* border: 1px solid black; */
+    }
+
+    .gallary-wrapper .row2 div img {
+        width: 100%;
+        height: 100%;
+        /* border: 1px solid black; */
+        transition: 1s;
+    }
+
+    .gallary-wrapper .row2 div img:hover {
+        transform: scale(1.1);
+        opacity: 0.7;
+    }
+
+
+    .gallary-wrapper .row2 .upload-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+        margin-top: 12rem;
+        margin-bottom: 11rem;
+        opacity: 0.5;
+        border: 0rem;
+    }
+
+    .gallary-wrapper .row2 .upload-icon h6 {
+        /* border:1px solid black; */
+    }
+
+    .gallary-wrapper .row2 .upload-icon .icon {
+        padding-left: 1rem;
+    }
+
+    .gallary-wrapper .col2 {
+        width: 100%;
+        margin: 0rem auto;
+        display: flex;
+        flex-direction: column;
+        /* border: 1px solid black; */
+
+    }
+
+    .gallary-wrapper .col2 .cover-image {
+        height: 14rem;
+        padding: 0.5rem;
+        text-align: center;
+        border-style: inset;
+        border: 3px solid rgb(219, 218, 218);
+        margin-top: 0.2rem;
+    }
+
+    .gallary-wrapper .col2 .edit-description {
+        height: 7rem;
+        padding: 0.5rem;
+        text-align: center;
+        margin-top: 0.1rem;
+        border-style: inset;
+        border: 3px solid rgb(219, 218, 218);
+    }
+
+    .gallary-wrapper .col2 .event-code {
+        height: 4rem;
+        padding: 0.5rem;
+        text-align: center;
+        margin-top: 0.1rem;
+        border-style: inset;
+        border: 3px solid rgb(219, 218, 218);
+
+    }
+
+    .gallary-wrapper .col2 .btn-wrapper {
+        height: fit-content;
+        padding: 1rem 0.5rem;
+        text-align: center;
+        margin-top: 0.1rem;
+        border-style: inset;
+        border: 3px solid rgb(219, 218, 218);
+    }
+
+
+
+    .gallary-wrapper .col2 .btn-wrapper div:first-child button {
+        height: 3rem;
+        width: 10rem;
+        border-radius: 1rem;
+        border: 3px solid white;
+        border-style: inset;
+    }
+
+    .gallary-wrapper .col2 .btn-wrapper div:last-child {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 1rem;
+    }
+
+    .gallary-wrapper .col2 .btn-wrapper div:last-child button {
+        height: 3rem;
+        width: 10rem;
+        border-radius: 1rem;
+        border: 3px solid white;
+        border-style: inset;
+    }
+
+
+    .gallary-wrapper .col2 .btn-wrapper div:first-child button:hover,
+    .gallary-wrapper .col2 .btn-wrapper div:last-child button:hover {
+        background-color: rgb(225, 225, 225);
+    }
+
+    .gallary-wrapper .col2 .delete-event {
+        height: 5rem;
+        padding: 0.5rem;
+        text-align: center;
+        border-style: inset;
+        border: 3px solid rgb(219, 218, 218);
+    }
+
+
+
+
+
+}
