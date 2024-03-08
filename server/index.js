@@ -7,7 +7,7 @@ mongoose.set("strictQuery", false);
 mongoose
   .connect(
     process.env.MONGO_URL ||
-      "mongodb+srv://adiyaprojects:PdZ0DtbKdrilVBk2@cluster0.sldtafy.mongodb.net"
+      "mongodb+srv://syedabdullahali380:JfqCt7Fmbm6v8M9d@cluster0.tua2bt0.mongodb.net"
   )
   .then(() => {
     console.log("mongo connection successful");
