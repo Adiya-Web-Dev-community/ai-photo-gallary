@@ -164,6 +164,7 @@ const signInUser = async (req, res) => {
 
                 return res.status(200).json({
                     success: true,
+                    dashboardId : userData.dashboardId,
                     message: "Signin Successful",
                     token: token,
                 });
