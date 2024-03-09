@@ -28,7 +28,7 @@ const HomePage = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [allEvents, setAllEvents] = useState();
-    const [eventRendering, setEventRendering] = useState('allEvents')
+    const [eventRendering, setEventRendering] = useState('')
 
     const getAllEvents = async () => {
         await axios.get(`/events?status=${eventRendering}`, {
@@ -71,7 +71,7 @@ const HomePage = () => {
                 <div className='home-page-main-button-container'>
                     <section>
                         <button
-                            onClick={() => setEventRendering('allEvents')}
+                            onClick={() => setEventRendering('')}
                             style={{ backgroundColor: eventRendering == 'allEvents' ? '#f0f0f0' : 'transparent' }}
                         >
                             SHOW ALL
@@ -79,16 +79,16 @@ const HomePage = () => {
                     </section>
                     <section>
                         <button
-                            onClick={() => setEventRendering('publishedEvents')}
-                            style={{ backgroundColor: eventRendering == 'publishedEvents' ? '#f0f0f0' : 'transparent' }}
+                            onClick={() => setEventRendering('published')}
+                            style={{ backgroundColor: eventRendering == 'published' ? '#f0f0f0' : 'transparent' }}
                         >
                             PUBLISHED EVENTS
                         </button>
                     </section>
                     <section>
                         <button
-                            onClick={() => setEventRendering('unpublishedEvents')}
-                            style={{ backgroundColor: eventRendering == 'unpublishedEvents' ? '#f0f0f0' : 'transparent' }}
+                            onClick={() => setEventRendering('unpublished')}
+                            style={{ backgroundColor: eventRendering == 'unpublished' ? '#f0f0f0' : 'transparent' }}
                         >
                             UNPUBLISHED EVENTS
                         </button>
