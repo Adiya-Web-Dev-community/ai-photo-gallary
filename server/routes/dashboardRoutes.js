@@ -12,6 +12,6 @@ const {
 router.get('/admin/dashboard', middleware, getDashboardDetails);
 
 // Update Dashboard Details
-router.put('/admin/dashboard/:id', middleware, editDashboard);
+router.put('/admin/dashboard', middleware, editDashboard);
 
 module.exports = router;
