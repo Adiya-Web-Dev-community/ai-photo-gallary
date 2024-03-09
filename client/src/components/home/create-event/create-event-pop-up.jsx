@@ -52,13 +52,14 @@ const CreateEventPopup = ({ handleClose, getAllEvents }) => {
         console.log(createEventForm)
         // setCoverPageURL(false)
         // return;
-        await axios.post('/create-event', createEventForm, {
+        await axios.post('/event', createEventForm, {
             headers: {
                 authorization: token
             }
         })
             .then((res) => {
                 if (res.data.success) {
+                    console.log(res.data)
                     const eventName = res.data.message.eventName;
                     const eventId = res.data.message._id;
                     dispatch(getCreateEventData(createEventForm))

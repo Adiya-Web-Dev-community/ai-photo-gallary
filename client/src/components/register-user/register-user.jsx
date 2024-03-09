@@ -55,7 +55,7 @@ const RegisterUser = () => {
                 if (res.data.success) {
                     toast.success('Email Verified Successfully!')
                     localStorage.setItem('token', res.data.token)
-                    navigate(`/home-page/${res.data.dashboardId}`)
+                    navigate(`/home-page`)
                 }
             })
             .catch((err) => {

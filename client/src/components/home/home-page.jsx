@@ -31,7 +31,7 @@ const HomePage = () => {
     const [eventRendering, setEventRendering] = useState('allEvents')
 
     const getAllEvents = async () => {
-        await axios.get('/all-events', {
+        await axios.get(`/events?status=${eventRendering}`, {
             headers: {
                 authorization: token
             }
@@ -47,7 +47,7 @@ const HomePage = () => {
 
     useEffect(() => {
         getAllEvents();
-    }, [])
+    }, [eventRendering])
 
     return (
         <div className="home-page-container">

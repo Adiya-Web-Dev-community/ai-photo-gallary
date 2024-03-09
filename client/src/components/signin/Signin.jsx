@@ -27,7 +27,7 @@ const Signin = () => {
             .then((res) => {
                 if (res.data.success) {
                     localStorage.setItem('token', res.data.token)
-                    navigate(`/home-page/${res.data.dashboardId}`)
+                    navigate(`/home-page`)
                 }
             })
             .catch((err) => {
