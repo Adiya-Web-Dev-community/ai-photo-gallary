@@ -12,7 +12,6 @@ mongoose
     .catch((err) => {
         console.log("Oh! Database connection error", err);
     });
-
 app.get("/", async (res, resp) => {
     resp.send("AI FACE RECOGNITION MERN APP");
 });

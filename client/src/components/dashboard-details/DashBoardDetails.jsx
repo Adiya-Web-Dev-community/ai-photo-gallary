@@ -10,22 +10,6 @@ const DashBoardDetails = () => {
   const token = localStorage.getItem("token");
   const [companyDetails, setCompanyDetails] = useState();
 
-  //   const getDashboardDetails = () => {
-  //     axios
-  //       .get("/dashboard-details", {
-  //         headers: {
-  //           authorization: token,
-  //         },
-  //       })
-  //       .then((res) => {
-  //         console.log(res.data.userData);
-  //         setCompanyDetails(res.data.userData);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   };
-
   const [dashboardData, setDashboardData] = useState({
     companyName: "",
     contactNo: "",
@@ -35,15 +19,12 @@ const DashBoardDetails = () => {
     address: "",
   });
   const [logo, setLogo] = useState("");
-  // const [watermark, setWatermark] = useState({
-
-  // })
 
   //HANDLE INPUTS OF dashboardData
   const handleInputs = (e) => {
     setDashboardData((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value,
+      // [e.target.name]: e.target.value,
     }));
   };
 
@@ -74,38 +55,38 @@ const DashBoardDetails = () => {
 
   //HANDLE SAVE
   const handleSave = async () => {
-    const DashBoardDetails = {
-      companyName: dashboardData.companyName,
-      companyLogo: dashboardData.companyLogo,
-      contactNo: dashboardData.contactNo,
-      companyEmail: dashboardData.companyEmail,
-      socialLink: dashboardData.socialLink,
-      address: dashboardData.address,
-    };
-    console.log("final result", DashBoardDetails);
-    const response = await axios.post(`dashboard-details`, DashBoardDetails, {
-      headers: {
-        authorization: token,
-      },
-    });
-    if (response.data.success) {
-      setDashboardData();
-      toast.success("company dashboard updated successfully");
-      navigate("/home-page");
-    } else {
-      console.log(response);
-    }
+    // const DashBoardDetails = {
+    //   companyName: dashboardData.companyName,
+    //   companyLogo: dashboardData.companyLogo,
+    //   contactNo: dashboardData.contactNo,
+    //   companyEmail: dashboardData.companyEmail,
+    //   socialLink: dashboardData.socialLink,
+    //   address: dashboardData.address,
+    // };
+    // console.log("final result", DashBoardDetails);
+    // const response = await axios.post(`dashboard-details`, DashBoardDetails, {
+    //   headers: {
+    //     authorization: token,
+    //   },
+    // });
+    // if (response.data.success) {
+    //   setDashboardData();
+    //   toast.success("company dashboard updated successfully");
+    // } else {
+    //   console.log(response);
+    // }
+    navigate("/home-page");
   };
 
-  useEffect(() => {
-    if (dashboardData.companyLogo) {
-      handleSave();
-    }
-    // eslint-disable-next-line
-  }, [dashboardData.companyLogo]);
+  // useEffect(() => {
+  //   if (dashboardData.companyLogo) {
+  //     handleSave();
+  //   }
+  //   // eslint-disable-next-line
+  // }, [dashboardData.companyLogo]);
 
   useEffect(() => {
-    getDashboardDetails();
+    // getDashboardDetails();
   }, []);
 
   return (
@@ -119,7 +100,7 @@ const DashBoardDetails = () => {
           className="form-control"
           label="Company Name"
           name="companyName"
-          value={dashboardData.companyName}
+          // value={dashboardData.companyName}
           onChange={handleInputs}
         />
 
@@ -138,7 +119,7 @@ const DashBoardDetails = () => {
           className="form-control"
           label="Contact Number"
           name="contactNo"
-          value={dashboardData.contactNo}
+          // value={dashboardData.contactNo}
           onChange={handleInputs}
         />
 
@@ -146,7 +127,7 @@ const DashBoardDetails = () => {
           className="form-control"
           label="Office/ Home Address"
           name="address"
-          value={dashboardData.address}
+          // value={dashboardData.address}
           onChange={handleInputs}
         />
 
@@ -159,7 +140,7 @@ const DashBoardDetails = () => {
           className="form-control"
           label="Company Email"
           name="companyEmail"
-          value={dashboardData.companyEmail}
+          // value={dashboardData.companyEmail}
           onChange={handleInputs}
         />
         <TextField
@@ -180,6 +161,7 @@ const DashBoardDetails = () => {
             SAVE
           </Button>
         </Box>
+        <button onClick={handleSave}>button</button>
       </form>
     </div>
   );
