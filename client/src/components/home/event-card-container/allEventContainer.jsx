@@ -6,7 +6,7 @@ const AllEventContainer = ({ allEvents, eventRendering }) => {
     return (
         <>
             {
-                <div className='home-event-card-container'>
+                <div className='home-event-card-container' style={{display:'flex',flexWrap:'wrap'}}>
                     {allEvents?.map((event) => {
                         return <EventCard event={event} key={event._id} />
                     })}
