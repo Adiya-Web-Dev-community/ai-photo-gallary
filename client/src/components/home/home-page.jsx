@@ -37,8 +37,10 @@ const HomePage = () => {
             }
         })
             .then((res) => {
-                console.log("all events => ", res.data.message)
-                setAllEvents(res.data.message)
+                console.log("all events => ", res.data.
+                data
+                )
+                setAllEvents(res.data.data)
             })
             .catch((err) => {
                 console.log(err)
@@ -46,9 +48,11 @@ const HomePage = () => {
     }
 
     useEffect(() => {
+        setAllEvents([])
         getAllEvents();
     }, [eventRendering])
 
+    console.log(allEvents)
     return (
         <div className="home-page-container">
             <section className="home-page-header">

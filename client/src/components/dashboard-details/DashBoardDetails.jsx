@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./DashBoardDetails.css";
 import { Box, Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ const DashBoardDetails = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [companyDetails, setCompanyDetails] = useState();
+  
 
   const [dashboardData, setDashboardData] = useState({
     companyName: "",
@@ -55,28 +56,47 @@ const DashBoardDetails = () => {
 
   //HANDLE SAVE
   const handleSave = async () => {
-    // const DashBoardDetails = {
-    //   companyName: dashboardData.companyName,
-    //   companyLogo: dashboardData.companyLogo,
-    //   contactNo: dashboardData.contactNo,
-    //   companyEmail: dashboardData.companyEmail,
-    //   socialLink: dashboardData.socialLink,
-    //   address: dashboardData.address,
-    // };
-    // console.log("final result", DashBoardDetails);
-    // const response = await axios.post(`dashboard-details`, DashBoardDetails, {
-    //   headers: {
-    //     authorization: token,
-    //   },
-    // });
-    // if (response.data.success) {
-    //   setDashboardData();
-    //   toast.success("company dashboard updated successfully");
-    // } else {
-    //   console.log(response);
-    // }
+    const DashBoardDetails = {
+      companyName: dashboardData.companyName,
+      companyLogo: dashboardData.companyLogo,
+      contactNo: dashboardData.contactNo,
+      companyEmail: dashboardData.companyEmail,
+      socialLink: dashboardData.socialLink,
+      address: dashboardData.address,
+    };
+    console.log("final result", DashBoardDetails);
+    const response = await axios.put(`/admin/dashboard`, DashBoardDetails, {
+      headers: {
+        authorization: token,
+      },
+    });
+    if (response.data.success) {
+      setDashboardData();
+      toast.success("company dashboard updated successfully");
+    } else {
+      console.log(response);
+    }
     navigate("/home-page");
   };
+
+
+  const getCompanyInfo = useCallback(async ()=>{
+      try{
+        const response = await axios.put(`/admin/dashboard`, DashBoardDetails, {
+          headers: {
+            authorization: token,
+          },
+        });
+        console.log(response.data)
+        if (response.data.success) {
+          setDashboardData(response.data);
+          toast.success("company dashboard updated successfully");
+        } 
+      }catch(error){
+        console.log(error);
+
+      }
+  },[token])
 
   // useEffect(() => {
   //   if (dashboardData.companyLogo) {
@@ -86,8 +106,8 @@ const DashBoardDetails = () => {
   // }, [dashboardData.companyLogo]);
 
   useEffect(() => {
-    // getDashboardDetails();
-  }, []);
+      getCompanyInfo();
+  },[getCompanyInfo]);
 
   return (
     <div className="dashboard-details-wrappper">
