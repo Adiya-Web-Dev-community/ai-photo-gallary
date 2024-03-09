@@ -9,14 +9,13 @@ const getEvents = async (req, res) => {
     try {
         const user = await User.findById(req.accountId);
 
-        const status = req.params.status;
-
+        const status = req.query.status;
         const query = {
             dashboardId: user.dashboardId,
             isSubEvents: false,
         };
 
-        if (status!==undefined, status!=="") {
+        if (status !== "") {
             query.status = status;
         }
 
