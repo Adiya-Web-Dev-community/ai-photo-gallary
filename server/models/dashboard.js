@@ -21,25 +21,31 @@ const dashboardSchema = new mongose.Schema({
   companyEmail: {
     type: String,
   },
-  socialLinks: [
-    {
-      linkType: {
-        type: String,
-        enum: [
-          "facebook",
-          "instagram",
-          "twitter",
-          "linkedin",
-          "youtube",
-          "website",
-          "other",
-        ],
-      },
-      link: {
-        type: String,
-      },
-    },
-  ],
+  // socialLinks: [
+  //   {
+  //     linkType: {
+  //       type: String,
+  //       enum: [
+  //         "facebook",
+  //         "instagram",
+  //         "twitter",
+  //         "linkedin",
+  //         "youtube",
+  //         "website",
+  //         "other",
+  //       ],
+  //     },
+  //     link: {
+  //       type: String,
+  //     },
+  //   },
+  // ],
+  socialLinks : {
+    type : String
+  },
+  contactNo : {
+    type : String
+  },
   companyAddress: {
     type: String,
   },

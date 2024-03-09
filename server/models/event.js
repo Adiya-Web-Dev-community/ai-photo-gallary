@@ -37,6 +37,9 @@ const eventSchema = new mongose.Schema({
     link:{
         type : String
     },
+    faceSearchLink : {
+        type : String
+    },
     imagesArray : [
         {
             type : String
