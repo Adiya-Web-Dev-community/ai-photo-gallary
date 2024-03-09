@@ -1,15 +1,158 @@
-const mongoose = require("mongoose");
+const mongose = require('mongoose');
 
-const eventSchema = new mongoose.Schema({
-  eventName: { type: String },
-  eventDate: { type: String },
-  eventDescription: { type: String },
-  eventCoverPage: { type: String },
-  eventImages: [],
-  eventVideoLinks: [],
-  published: { type: Boolean, default: false },
-  // reference: dashboard , client
-});
+const eventSchema = new mongose.Schema({
+    eventName : {
+        type : String
+    },
+    eventDate : {
+        type : Date
+    }, 
+    eventCode : {
+        type : String
+    },
+    coverImage : {
+        type : String
+    },
+    description : {
+        type : String
+    },
+    isSubEvents : {
+        type : Boolean,
+        default : false
+    },
+    parentEvent : {
+        type : mongose.Schema.Types.ObjectId,
+        ref : "event"
+    },
+    subEvents : [
+        {
+            type : mongose.Schema.Types.ObjectId,
+            ref : "event"
+        }
+    ],
+    qrCode :{
+        type : String
+    },
 
-const EventModel = mongoose.model("event", eventSchema);
-module.exports = EventModel;
+    link:{
+        type : String
+    },
+    imagesArray : [
+        {
+            type : String
+        }
+    ],
+    waterMarks : [
+        {
+            type : String
+        }
+    ],
+
+    eventHost :{
+        email : {
+            type : String
+        },
+        name : {
+            type : String
+        },
+        phone : {
+            type : String
+        }
+    },
+    eventAccessUsers : [
+        {
+            name : {
+                type : String
+            },
+            email : {
+                type : String
+            }, 
+            phone : {
+                type : String
+            },
+            faceData : {
+                type : String   
+            },
+            status : {
+                type : String,
+                enum : ["pending", "rejected", "accepted", "delivered"],
+            },
+            sharedImagesArray : [
+                {
+                    type : String
+                }
+            ]
+        }
+    ],
+    eventImagesByUsers : [
+        {
+            name : {
+                type : String
+            },
+            email : {
+                type : String
+            }, 
+            phone : {
+                type : String
+            },
+            status : {
+                type : String,
+                enum : ["pending", "rejected", "accepted", "delivered"],
+            },
+            sharedImagesArray : [
+                {
+                    type : String
+                }
+            ]
+        }
+    ],
+    blockEmails : [
+        {
+            type : String
+        }
+    ],
+    eventExpirationDate : {
+        type : Date
+    },
+    dashboardId : {
+        type: mongose.Schema.Types.ObjectId,
+        ref: "dashboard",
+    },
+    owner : {
+        type : String
+    },
+    status : {
+        type : String,
+        enum : ["active", "inactive"]
+    },
+    pin :{
+        type : String
+    },
+    pinRequired : {
+        type : Boolean
+    },
+
+
+    // Settings
+    faceSearch : {
+        type : Boolean
+    },
+    fullEventAccess : {
+        type : Boolean
+    },
+    eventPublished : {
+        type : Boolean
+    },
+    allowUserToPostImages : {
+        type : Boolean,
+        default : false
+    },
+
+    createdAt : {
+        type : Date,
+        default : Date.now
+    }
+})
+
+const eventModel = mongose.model('event', eventSchema);
+module.exports = eventModel
