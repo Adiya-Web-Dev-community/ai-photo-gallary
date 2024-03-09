@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "./DashBoardDetails.css";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, Input, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "../../helpers/axios";
 import { toast } from "react-hot-toast";
@@ -10,22 +10,46 @@ const DashBoardDetails = () => {
   const token = localStorage.getItem("token");
   const [companyDetails, setCompanyDetails] = useState();
   
-
+  const dummyArray = [
+    {
+      id: 1,
+      linkType: "facebook",
+      link: "https://www.facebook.com/example"
+    },
+    {
+      id: 2,
+      linkType: "instagram",
+      link: "https://www.instagram.com/example"
+    },
+    {
+      id: 3,
+      linkType: "twitter",
+      link: "https://www.twitter.com/example"
+    },
+  
+  ];
   const [dashboardData, setDashboardData] = useState({
     companyName: "",
     contactNo: "",
     companyEmail: "",
-    socialLink: "",
+    socialLink: dummyArray,
     companyLogo: "",
     address: "",
   });
   const [logo, setLogo] = useState("");
+ 
+  
+  // console.log(dummyArray);
+  
+  
+  // console.log(dummyArray);
+  
 
   //HANDLE INPUTS OF dashboardData
   const handleInputs = (e) => {
     setDashboardData((prevState) => ({
       ...prevState,
-      // [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -56,46 +80,41 @@ const DashBoardDetails = () => {
 
   //HANDLE SAVE
   const handleSave = async () => {
-    const DashBoardDetails = {
-      companyName: dashboardData.companyName,
-      companyLogo: dashboardData.companyLogo,
-      contactNo: dashboardData.contactNo,
-      companyEmail: dashboardData.companyEmail,
-      socialLink: dashboardData.socialLink,
-      companyAddress: dashboardData.address,
-    };
+  
 
-    const response = await axios.put(`/admin/dashboard`, DashBoardDetails, {
+    const response = await axios.put(`/admin/dashboard`, dashboardData, {
       headers: {
         authorization: token,
       },
     });
     if (response.data.success) {
-      setDashboardData();
       toast.success("company dashboard updated successfully");
     } else {
       console.log(response);
     }
-    navigate("/home-page");
+    // navigate("/home-page");
   };
+  console.log(token)
 
 
   const getCompanyInfo = useCallback(async ()=>{
       try{
-        const response = await axios.get(`/admin/dashboard`, DashBoardDetails, {
+        const response = await axios.get(`/admin/dashboard`, {
           headers: {
             authorization: token,
           },
         });
-        console.log(response.data)
         if (response.data.success) {
-          setDashboardData(response.data);
+          setDashboardData({...response.data.data[0],          socialLink:dummyArray
+          });
         } 
       }catch(error){
         console.log(error);
 
       }
   },[token])
+
+  console.log(dashboardData)
 
   // useEffect(() => {
   //   if (dashboardData.companyLogo) {
@@ -108,18 +127,39 @@ const DashBoardDetails = () => {
       getCompanyInfo();
   },[getCompanyInfo]);
 
+  const handleChange = (id, field, value) => {
+    setDashboardData(prev=>({
+      ...prev,socialLink:prev.socialLink.map(link => {
+        if (link.id === id) {
+          return { ...link, [field]: value };
+        }
+        return link;
+      })
+    }))
+  };
+
+  const handleAddLink = () => {
+    const newId = dashboardData.socialLink.length + 1;
+    setDashboardData(prev=>({...prev,
+     socialLink:[...prev.socialLink, { id: newId, ...{ linkType: '', link: '' } }]
+  }));
+  };
+
   return (
     <div className="dashboard-details-wrappper">
       <h2>Dashboard Settings</h2>
       <h6>Update your account details, profile and more</h6>
 
-      <form className="container">
+      <form className="container" onSubmit={(e)=>{
+       e.preventDefault()
+       handleSave()
+      }}>
         <TextField
           type="text"
           className="form-control"
           label="Company Name"
           name="companyName"
-          // value={dashboardData.companyName}
+          value={dashboardData.companyName}
           onChange={handleInputs}
         />
 
@@ -138,16 +178,18 @@ const DashBoardDetails = () => {
           className="form-control"
           label="Contact Number"
           name="contactNo"
-          // value={dashboardData.contactNo}
+          value={dashboardData.contactNo}
           onChange={handleInputs}
         />
 
         <TextField
           className="form-control"
           label="Office/ Home Address"
-          name="address"
-          // value={dashboardData.address}
+          name="companyAddress"
+          type="text"
+          value={dashboardData.companyAddress}
           onChange={handleInputs}
+          focused={dashboardData?.companyAddress?.trim()}
         />
 
         {/* <Box className='watermark-wrapper'>
@@ -159,28 +201,56 @@ const DashBoardDetails = () => {
           className="form-control"
           label="Company Email"
           name="companyEmail"
-          // value={dashboardData.companyEmail}
+          value={dashboardData.companyEmail}
           onChange={handleInputs}
         />
-        <TextField
+        {/* <TextField
           type="text"
           className="form-control"
           label="Social Link"
           name="socialLink"
           alue={dashboardData.socialLink}
           onChange={handleInputs}
-        />
+        /> */}
+          {/* <label style={{margin:'10px'}}>Social Link</label> */}
+
+       
+         {/* <Box sx={{display:'grid',padding:'10px ',border:'1px solid',borderRadius:'5px',justifyContent:'start',
+        gridTemplateColumns:`repeat(${6},1fr)`
+        }}>
+          {dummyArray.map((el)=>
+            <Button style={{padding:'10px'}}>
+             {el.linkType}
+            </Button>
+          )}
+             {dashboardData.socialLink.map((el) =>
+        <div key={el.id} style={{ padding: '10px'}}>
+          <TextField
+            value={el.linkType}
+            onChange={(e) => handleChange(el.id, 'linkType', e.target.value)}
+            label='Link Type'
+            name='linkType'
+          />
+          <TextField
+            value={el.link}
+            onChange={(e) => handleChange(el.id, 'link', e.target.value)}
+            label='Link'
+            name='link'
+            sx={{ margin: '15px 0px 0px 0px' }}
+          />
+        </div>
+      )}
+        </Box> */}
 
         <Box className="savebtn-wrapper">
           <Button
             variant="contained"
             className="btn"
-            onClick={handleUploadLogo}
+            type='submit'
           >
             SAVE
           </Button>
         </Box>
-        <button onClick={handleSave}>button</button>
       </form>
     </div>
   );
