@@ -15,14 +15,14 @@ import Typography from '@mui/material/Typography';
 const EventCard = ({ event }) => {
     const navigate  = useNavigate()
     return (
-        <Card sx={{ maxWidth: 345,borderRadius:'15px',padding:'10px' }} onClick={() => {navigate(`/event-form-page/${event.eventName}/${event._id}`);}}>
+        <Card sx={{ maxWidth: 345,borderRadius:'15px',padding:'10px',width:'280px' }} onClick={() => {navigate(`/event-form-page/${event.eventName}/${event._id}`);}}>
       {/* <CardMedia
         sx={{ height: 140,width:140,margin:'auto' }}
         image={event.qrCode}
         title="green iguana"
       /> */}
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography gutterBottom variant="h6" component="div">
           {event.eventName}
         </Typography>
         <Typography variant="body2" color="text.secondary">

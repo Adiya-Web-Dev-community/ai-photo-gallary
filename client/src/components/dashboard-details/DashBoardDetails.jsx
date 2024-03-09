@@ -62,9 +62,9 @@ const DashBoardDetails = () => {
       contactNo: dashboardData.contactNo,
       companyEmail: dashboardData.companyEmail,
       socialLink: dashboardData.socialLink,
-      address: dashboardData.address,
+      companyAddress: dashboardData.address,
     };
-    console.log("final result", DashBoardDetails);
+
     const response = await axios.put(`/admin/dashboard`, DashBoardDetails, {
       headers: {
         authorization: token,
@@ -82,7 +82,7 @@ const DashBoardDetails = () => {
 
   const getCompanyInfo = useCallback(async ()=>{
       try{
-        const response = await axios.put(`/admin/dashboard`, DashBoardDetails, {
+        const response = await axios.get(`/admin/dashboard`, DashBoardDetails, {
           headers: {
             authorization: token,
           },
@@ -90,7 +90,6 @@ const DashBoardDetails = () => {
         console.log(response.data)
         if (response.data.success) {
           setDashboardData(response.data);
-          toast.success("company dashboard updated successfully");
         } 
       }catch(error){
         console.log(error);
