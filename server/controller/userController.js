@@ -73,15 +73,10 @@ const registerUser = async (req, res) => {
 
             const user = await User.create(userData);
             sendOtpMail(email, otp);
-            const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY, {
-                expiresIn: "24h",
-            });
-
             return res.status(200).json({
                 success: true,
                 message: "User created successfully",
                 data: user,
-                token: token,
             });
         }
     } catch (err) {
@@ -109,7 +104,11 @@ const verifyOTP = async (req, res) => {
             user.dashboardId = dashboard._id;
             user.isSetup = true;
             await user.save();
-            return res.status(202).json({
+            const token = await jwt.sign({ _id: user._id }, process.env.SECRET_KEY, {
+                expiresIn: "24h",
+            });
+            return res.status(201).json({
+                token: token,
                 dashboardId: dashboard._id,
                 success: true,
                 message: "Email verified successfully",
