@@ -23,12 +23,11 @@ const Signin = () => {
             setSignInBtnActive(false)
             return toast.error('all the fields are mandatory')
         }
-        await axios.post('/sign-in', signInForm)
+        await axios.post('/user/signin', signInForm)
             .then((res) => {
-                console.log(res)
-                if (res.data.message == 'Signin Successful') {
+                if (res.data.success) {
                     localStorage.setItem('token', res.data.token)
-                    navigate('/dashboard-details')
+                    navigate(`/home-page/${res.data.dashboardId}`)
                 }
             })
             .catch((err) => {

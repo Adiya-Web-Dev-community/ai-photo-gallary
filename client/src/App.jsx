@@ -23,7 +23,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Signin />} />
           <Route path='/dashboard-details' element={<DashBoardDetails />} />
-          <Route path='/home-page' element={<HomePage />} />
+          <Route path='/home-page/:dashbordId' element={<HomePage />} />
           <Route path='/event-form-page/:eventName/:eventId' element={<EventFormPage />} />
           <Route path='/gallary/:id' element={<Gallary />} />
           <Route path='/watermaker-setup' element={<SetupWatermark />} />

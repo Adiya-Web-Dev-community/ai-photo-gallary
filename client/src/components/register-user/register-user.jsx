@@ -7,15 +7,16 @@ import { useNavigate } from 'react-router-dom';
 
 const RegisterUser = () => {
     const navigate = useNavigate()
-    const [registerForm, setRegisterForm] = useState({ mobileNo: '', email: '', password: '', reEnterPassword: '' })
+    const [registerForm, setRegisterForm] = useState({ mobile: '', email: '', password: '', reEnterPassword: '' })
     const handleRegisterForm = (e) => {
         setRegisterForm({ ...registerForm, [e.target.name]: e.target.value })
         setErr({ email: false, mobile: false })
     }
     const [err, setErr] = useState({ email: false, mobile: false })
+    const [token,setToken] = useState('')
 
     const postRegisterForm = async () => {
-        if (!registerForm.email || !registerForm.mobileNo || !registerForm.password || !registerForm.reEnterPassword) {
+        if (!registerForm.email || !registerForm.mobile || !registerForm.password || !registerForm.reEnterPassword) {
             return toast.error('all the fields are mandatory')
         }
         else if (registerForm.password != registerForm.reEnterPassword) {
@@ -23,7 +24,8 @@ const RegisterUser = () => {
         }
         await axios.post('/user/register', registerForm)
             .then((res) => {
-                console.log(res)
+                console.log(res.data.token)
+                setToken(res.data.token)
                 if (res.data.message == "user found but not verified") {
                     setOtpBox(true)
                 }
@@ -47,18 +49,20 @@ const RegisterUser = () => {
 
     const submitOtp = () => {
         const data = { email: registerForm.email, otp: otp }
-        axios.post('/verify-otp', data)
+        axios.put('/user/verify-otp', data)
             .then((res) => {
-                console.log(res)
-                if (res.data.message == 'Email verified successfully') {
+                // console.log(res.data.success)
+                if (res.data.success) {
                     toast.success('Email Verified Successfully!')
-                    navigate("/")
+                    localStorage.setItem('token', res.data.token)
+                    navigate(`/home-page/${res.data.dashboardId}`)
                 }
             })
             .catch((err) => {
                 console.log(err)
             })
     }
+
 
     return (
         <div className='container signin-wrapper'>
@@ -67,7 +71,7 @@ const RegisterUser = () => {
             <div className='form-wrapper'>
 
                 <Box className='mobilenobtn-wrapper'>
-                    <input name='mobileNo' type="tel" variant="contained" placeholder="Enter Mobile Number" className='btn' onChange={handleRegisterForm} />
+                    <input name='mobile' type="tel" variant="contained" placeholder="Enter Mobile Number" className='btn' onChange={handleRegisterForm} />
                 </Box>
                 {err.email ? <p>email already in use</p> : null}
 
