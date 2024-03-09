@@ -1,14 +1,71 @@
-const mongoose = require('mongoose')
+var mongose = require("mongoose");  
 
+const userSchema = new mongose.Schema({
+    name : {
+        type : String
+    },
+    email : {
+        type : String
+    },
+    mobile : {
+        type : String
+    },
+    password : {
+        type : String
+    },
+    dashboardId : {
+        type: mongose.Schema.Types.ObjectId,
+        ref: "dashboard",
+    },
+    isSetup : {
+        type : Boolean,
+        default : false
+    },
+    planArray :[
+        {
+            planId : {
+                
+                    type : mongose.Schema.Types.ObjectId,
+                    ref: "plan",
+                   
+                
+            }
+            
+        }
+    ],
+    otp : {
+        type : String
+    },
+    isVerified : {
+        type : Boolean,
+        default : false
+    },
+    // usersArray : [
+    //     {
+    //         name : { 
+    //             type : String,
+    //         },
+    //         email : {
+    //             type : String
+    //         },
+    //         role : {
+    //             type : String
+    //         }, 
+    //         password : {
+    //             type : String
+    //         }
+    //     }
+    // ],
+    resetToken: {
+        type: String,
+    },
+    createdAt : {
+        type : Date,
+        default : Date.now
+    }
 
-const UserSchema = new mongoose.Schema({
-    mobileNo: { type: String, require: true },
-    email: { type: String, require: true },
-    otp: { type: String },
-    isVerified: { type: Boolean, default: false },
-    password: { type: String },
-    companyDashboardDetails: { type: Object }
 })
 
-const UserModel = mongoose.model('users', UserSchema)
-module.exports = UserModel
+const userModel = mongose.model("user", userSchema);
+
+module.exports = userModel;
