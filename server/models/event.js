@@ -123,7 +123,7 @@ const eventSchema = new mongose.Schema({
     },
     status : {
         type : String,
-        enum : ["active", "inactive"]
+        enum : ["published", "unpublished"]
     },
     pin :{
         type : String
@@ -138,9 +138,6 @@ const eventSchema = new mongose.Schema({
         type : Boolean
     },
     fullEventAccess : {
-        type : Boolean
-    },
-    eventPublished : {
         type : Boolean
     },
     allowUserToPostImages : {
