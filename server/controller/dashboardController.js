@@ -42,7 +42,7 @@ const editDashboard = async (req, res) => {
         }
 
         const dashboard = await Dashboard.findOneAndUpdate({
-            _id: req.params.id
+            _id: account.dashboardId,
         }, req.body, {
             new: true
         })

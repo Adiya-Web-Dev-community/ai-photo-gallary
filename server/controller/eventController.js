@@ -145,30 +145,23 @@ const updateEvent = async (req, res) => {
         const userid = req.accountId;
         const user = await User.findById(userid);
 
-        const dashboardId = user.dashboardId;
-        const dashboard = await DashBoard.findById(dashboardId);
-        if (req.params.eventId in dashboard.events) {
-            const event = await Event.findByIdAndUpdate(
-                req.params.eventId,
-                {
-                    ...req.body,
-                },
-                {
-                    new: true,
-                }
-            );
-            return res.status(200).json({
-                message: "Event updated successfully",
-                success: true,
-                data: event,
-            });
-        }
-        return res.status(404).json({
-            message: "Event not found",
-            success: false,
+        const event = await Event.findByIdAndUpdate(
+            req.params.eventId,
+            {
+                ...req.body,
+            },
+            {
+                new: true,
+            }
+        );
+        return res.status(200).json({
+            message: "Event updated successfully",
+            success: true,
+            data: event,
         });
     } catch (error) {
         return res.status(500).json({
+            console: error.message,
             message: "Failed to update event",
             success: false,
         });

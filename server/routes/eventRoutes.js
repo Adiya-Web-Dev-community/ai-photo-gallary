@@ -27,7 +27,7 @@ router.post("/event", middleware, addEvent);
 router.post("/subevent/:id", middleware, addSubEvent);
 
 // Update a event
-router.put("/subevent/:id", middleware, updateEvent);
+router.put("/event/:id", middleware, updateEvent);
 
 // Get a subevent
 router.get("/subevent/:id", middleware, getSubEvent);
