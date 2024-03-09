@@ -38,6 +38,7 @@ const CreateEventPopup = ({ handleClose, getAllEvents }) => {
                 toast.dismiss()
                 // setCoverPageURL(res.data.url)
                 setCreateEventForm({ ...createEventForm, eventCoverPage: res.data.url })
+                
             })
             .catch((err) => {
                 console.log(err)

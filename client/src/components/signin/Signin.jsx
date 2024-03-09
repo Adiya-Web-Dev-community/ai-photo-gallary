@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import './Signin.css'
 import { Button, Box, TextField } from '@mui/material'
 import { Icon } from 'react-icons-kit'
@@ -38,8 +38,45 @@ const Signin = () => {
         setSignInBtnActive(false)
     }
 
+
+    useEffect(() => {
+        const initGoogleSignIn = () => {
+          window.gapi.load('auth2', () => {
+            window.gapi.auth2.init({
+              client_id: 'YOUR_CLIENT_ID.apps.googleusercontent.com',
+            });
+          });
+        };
+    
+        if (window.gapi) {
+          initGoogleSignIn();
+        } else {
+          // Load Google API script dynamically
+          const script = document.createElement('script');
+          script.src = 'https://apis.google.com/js/platform.js';
+          script.async = true;
+          script.defer = true;
+          script.onload = initGoogleSignIn;
+          document.head.appendChild(script);
+        }
+      }, []);
+
+  const handleSignIn = () => {
+    const auth2 = window.gapi.auth2.getAuthInstance();
+    auth2.signIn().then(googleUser => {
+      const profile = googleUser.getBasicProfile();
+      console.log('ID: ' + profile.getId());
+      console.log('Name: ' + profile.getName());
+      console.log('Email: ' + profile.getEmail());
+      // Handle sign-in success
+    }, error => {
+      // Handle sign-in error
+    });
+  };
+
+
     return (
-        <div className='container signin-wrapper'>
+        <div className='container signin-wrapper' style={{height:'38rem'}}>
             <h4>BUSINESS WITH HAYAT MART</h4>
             <h5>Sign In to access your Dashboard</h5>
             <div className='form-wrapper'>
@@ -62,6 +99,17 @@ const Signin = () => {
                             <span>Sign in</span>}
                     </button>
                 </Box>
+                <p>-----------------------------------Or-----------------------------------</p>
+
+                <Button onClick={()=>{handleSignIn()}} style={{
+                    borderRadius: '30px',
+                    borderColor:'rgb(156, 155, 155)',
+                    color:'black',
+                    width:'300px',
+                    boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.5)' ,
+                    padding:'10px 5px',
+                    alignSelf:'center'
+                    }} variant="outlined">Continue with Google</Button>
                 <p className='dont-have-account-option'>
                     dont have an account? <span style={{ color: 'red', fontWeight: '500', cursor: 'pointer' }}
                         onClick={() => navigate('register-new-user')}>register</span>

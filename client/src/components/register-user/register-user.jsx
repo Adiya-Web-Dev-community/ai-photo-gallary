@@ -21,7 +21,7 @@ const RegisterUser = () => {
         else if (registerForm.password != registerForm.reEnterPassword) {
             return toast.error('both the passwords are different')
         }
-        await axios.post('/user-registration', registerForm)
+        await axios.post('user/register', registerForm)
             .then((res) => {
                 console.log(res)
                 if (res.data.message == "user found but not verified") {

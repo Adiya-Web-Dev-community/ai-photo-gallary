@@ -22,12 +22,12 @@ function App() {
       <div style={{ marginTop: '5rem' }}>
         <Routes>
           <Route path='/' element={<Signin />} />
-          <Route path='/home-page' element={<HomePage />} />
           <Route path='/dashboard-details' element={<DashBoardDetails />} />
-          <Route path='/watermaker-setup' element={<SetupWatermark />} />
-          <Route path='/gallary/:id' element={<Gallary />} />
-          <Route path='/facerecognitiongallery' element={<FaceRecognitionGallery />} />
+          <Route path='/home-page' element={<HomePage />} />
           <Route path='/event-form-page/:eventName/:eventId' element={<EventFormPage />} />
+          <Route path='/gallary/:id' element={<Gallary />} />
+          <Route path='/watermaker-setup' element={<SetupWatermark />} />
+          <Route path='/facerecognitiongallery' element={<FaceRecognitionGallery />} />
           <Route path='/register-new-user' element={<RegisterUser />} />
           <Route path='/set-password' element={<SetPassword />} />
         </Routes>
