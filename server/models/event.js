@@ -123,7 +123,8 @@ const eventSchema = new mongose.Schema({
     },
     status : {
         type : String,
-        enum : ["published", "unpublished"]
+        enum : ["published", "unpublished"],
+        default : "unpublished"
     },
     pin :{
         type : String
