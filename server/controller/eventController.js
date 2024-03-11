@@ -3,8 +3,8 @@ const Event = require("../models/event");
 const User = require("../models/user");
 const { eventConfirmation } = require("../helpers/emailHelper.js");
 const QRCode = require("qrcode");
-const Jimp = require('jimp');
-const axios = require('axios');
+const Jimp = require("jimp");
+const axios = require("axios");
 
 // Get all events
 const getEvents = async (req, res) => {
@@ -259,11 +259,10 @@ const addYoutubeLinks = async (req, res) => {
         if (!event) {
             return res.status(404).json({ message: "Event not found" });
         }
-
-        event.videoLinks = event.videoLinks.concat(videoLinks);
+        event.videoLinks = [...event.videoLinks, ...videoLinks];
+        
 
         await event.save();
-
         return res
             .status(200)
             .json({ message: "YouTube links added successfully", data: event });
@@ -276,28 +275,27 @@ const deleteYoutubeLinks = async (req, res) => {
     try {
         const eventId = req.params.id;
         const linkId = req.params.linkId;
-    
+
         const event = await Event.findById(eventId);
 
         if (!event) {
-          return res.status(404).json({ message: 'Event not found' });
+            return res.status(404).json({ message: "Event not found" });
         }
-      
+
         event.videoLinks = event.videoLinks.filter(
-          (video) => video._id.toString() !== linkId
+            (video) => video._id.toString() !== linkId
         );
-      
-    
+
         await event.save();
-    
+
         return res.status(200).json({
-          message: "YouTube link deleted successfully",
-          data: event,
+            message: "YouTube link deleted successfully",
+            data: event,
         });
-      } catch (error) {
+    } catch (error) {
         console.error(error);
         return res.status(500).json({ message: "Internal Server Error" });
-      }
+    }
 };
 
 const getYoutubeLinks = async (req, res) => {
@@ -321,34 +319,42 @@ const updateYoutubeLinks = async (req, res) => {
     try {
         const eventId = req.params.id;
         const linkId = req.params.linkId;
-        const updatedFields = req.body; 
-        console.log('Received updatedFields:', updatedFields);
+        const updatedFields = req.body;
+        console.log("Received updatedFields:", updatedFields);
 
-    
         const event = await Event.findById(eventId);
-    
-        if (!event) {
-          return res.status(404).json({ message: 'Event not found' });
-        }
-    
-        const linkIndex = event.videoLinks.findIndex(link => link._id.toString() === linkId);
-    
-        if (linkIndex === -1) {
-          return res.status(404).json({ message: 'YouTube link not found' });
-        }
-    
-        const updatedLink = { ...event.videoLinks[linkIndex], ...updatedFields };
-        event.videoLinks[linkIndex] = updatedLink;
-    
-        await event.save();
-    
-        return res.status(200).json({ message: 'YouTube link updated successfully', data: event });
-      } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Internal Server Error' });
-      }
-}
 
+        if (!event) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        const linkIndex = event.videoLinks.findIndex(
+            (link) => link._id.toString() === linkId
+        );
+
+        if (linkIndex === -1) {
+            return res.status(404).json({ message: "YouTube link not found" });
+        }
+
+        const updatedLink = {
+            ...event.videoLinks[linkIndex],
+            ...updatedFields,
+        };
+        event.videoLinks[linkIndex] = updatedLink;
+
+        await event.save();
+
+        return res
+            .status(200)
+            .json({
+                message: "YouTube link updated successfully",
+                data: event,
+            });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
 
 const addImages = async (req, res) => {
     try {
@@ -416,7 +422,6 @@ const deleteImages = async (req, res) => {
 
 const getImagesArray = async (req, res) => {
     try {
-
         const eventId = req.params.id;
         const event = await Event.findById(eventId);
 
@@ -430,12 +435,60 @@ const getImagesArray = async (req, res) => {
     }
 };
 
+const addWatermarkInImages = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        const { imagesArray, watermarkUrl } = req.body;
 
-// const updateImages = async (req, res) => {
-//     try {
-        
-//     }
-// }
+        if (!Array.isArray(imagesArray) || typeof watermarkUrl !== "string") {
+            return res.status(400).json({ message: "Invalid request data" });
+        }
+
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        const watermarkedImages = [];
+
+        for (const imageUrl of imagesArray) {
+            const outputFilePath = `./path-to-save-watermarked-images/${Date.now()}_${Math.random()}.jpg`;
+            await addWatermarkToImage(imageUrl, watermarkUrl, outputFilePath);
+            watermarkedImages.push(outputFilePath);
+        }
+
+        event.imagesArray = watermarkedImages;
+        await event.save();
+
+        return res.status(200).json({
+            message:
+                "Watermark added to images and imagesArray updated successfully",
+            data: event,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+async function addWatermarkToImage(imageUrl, watermarkUrl, outputFilePath) {
+    try {
+        const originalImage = await Jimp.read(imageUrl);
+        const watermark = await Jimp.read(watermarkUrl);
+        watermark.resize(originalImage.getWidth() * 0.2, Jimp.AUTO);
+        const x = originalImage.getWidth() - watermark.getWidth() - 10;
+        const y = originalImage.getHeight() - watermark.getHeight() - 10;
+        originalImage.composite(watermark, x, y, {
+            mode: Jimp.BLEND_SOURCE_OVER,
+            opacitySource: 0.5,
+        });
+        await originalImage.writeAsync(outputFilePath);
+        console.log("Watermark added to", outputFilePath);
+    } catch (error) {
+        console.error("Error adding watermark:", error.message);
+    }
+}
 
 module.exports = {
     getEvents,
@@ -452,7 +505,6 @@ module.exports = {
     deleteYoutubeLinks,
     addImages,
     deleteImages,
-    getImagesArray
-
-
+    getImagesArray,
+    addWatermarkInImages
 };
