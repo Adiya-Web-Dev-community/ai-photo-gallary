@@ -18,21 +18,27 @@ import { toast } from 'react-hot-toast';
 import ImagesCorousal from './unpublished-images-container/images-corousal/images-corousal';
 
 const EventFormPage = () => {
-    //use params
     const { eventName, eventId } = useParams();
-    console.log(eventName, eventId)
-    const { createEventData } = useSelector((store) => store.eventPopUP)
-    // console.log(createEventData)
-
+    const token = localStorage.getItem('token')
     const [containerRendering, setContainerRendering] = useState('allImages')
-
     const [eventData, setEventData] = useState()
+    const [isEditData,setIsEditData] = useState({
+        isEdit:false,
+        data:{}
+    }) 
+
 
     const getEventDetails = async () => {
-        await axios.get(`/event-details/${eventName}/${eventId}`)
+        await axios.get(`/event/${eventId}/youtube-links`,
+        {
+            headers: {
+                authorization: token
+            }
+        }
+        )
             .then((res) => {
-                console.log('getEventdetails => ', res.data.message)
-                setEventData(res.data.message)
+                console.log('getEventdetails => ', res.data)
+                setEventData(res.data.data)
             })
             .catch((err) => {
                 console.log(err)
@@ -181,8 +187,13 @@ const EventFormPage = () => {
                         <section style={{ display: containerRendering == 'unpublishedImages' ? 'block' : 'none' }}>
                             <UnpublishedImagesContainer eventData={eventData} getEventDetails={getEventDetails} />
                         </section>
-                        <section style={{ display: containerRendering == 'videos' ? 'block' : 'none' }}>
-                            <AllVideosContainer eventData={eventData} getEventDetails={getEventDetails} />
+                        <section  style={{ display: containerRendering == 'videos' ? 'block' : 'none' }}>
+                            <AllVideosContainer onClick={
+                                (el)=>{
+                                    setIsEditData(prev=>({...prev,isEdit:true,data:el}))
+                                    handleOpenVideoLinkModal()
+                                }
+                            }  eventData={eventData} getEventDetails={getEventDetails} />
                         </section>
                     </div>
                 </section>
@@ -255,18 +266,28 @@ const EventFormPage = () => {
             {/* Add Video Link Modal */}
             <Modal
                 open={openVideoLinkModal}
-                onClose={handleCloseVideoLinkModal}
+                onClose={()=>{
+                    handleCloseVideoLinkModal()
+                    setIsEditData(prev=>({...prev,isEdit:false,data:{}}))
+                }}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
                 className="create-event-popup-modal"
+                
             >
                 <Box sx={style}>
                     <AddVideoLinkModal
+                        edit={isEditData.isEdit}
+                        data={isEditData.data} 
+                        onClick={()=>{
+                            setIsEditData(prev=>({...prev,isEdit:false,data:{}}))
+                        }}
                         handleCloseVideoLinkModal={handleCloseVideoLinkModal}
                         videoLinkArr={videoLinkArr}
                         setVideoLinkArr={setVideoLinkArr}
                         getEventDetails={getEventDetails}
                         eventData={eventData}
+                        
                     />
                 </Box>
             </Modal>
@@ -279,6 +300,7 @@ const EventFormPage = () => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
                 className="create-event-popup-modal"
+                
             >
                 <Box sx={style}>
                     <ImagesCorousal

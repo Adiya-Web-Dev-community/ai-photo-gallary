@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './add-video-link-modal.css'
 import { RxCross1 } from 'react-icons/rx';
 import { toast } from "react-hot-toast";
 import { useNavigate,useParams } from 'react-router-dom';
 import { Button, TextField, TextareaAutosize } from '@mui/material';
 import axios from '../../../helpers/axios';
-const AddVideoLinkModal = () => {
+const AddVideoLinkModal = ({edit,data,onClick}) => {
    // const navigate = useNavigate()
  
 
@@ -40,9 +40,13 @@ const AddVideoLinkModal = () => {
    }));
  };
  const handleSubmit = async (e) => {
+   const pathUrl = edit?`/event/${eventId}/youtube-links/${data?._id}`:
+   `/event/${eventId}/youtube-links`
    e.preventDefault();
-   await axios.post(`/event/${eventId}`, 
-   {
+
+   console.log(pathUrl)
+   await axios[edit?'put':'post'](pathUrl, 
+   edit?formData:{
       "videoLinks" : [
          formData
    ]},
@@ -57,8 +61,16 @@ const AddVideoLinkModal = () => {
       .catch((err) => {
           console.log(err)
       })
+      if(onClick){
+         onClick()
+      }
  };
 
+ useEffect(()=>{
+if(edit){
+   setFormData(data)
+}
+ },[edit])
 
    return (
       <form onSubmit={handleSubmit} className='add-video-link-modal-container' >
@@ -114,7 +126,8 @@ const AddVideoLinkModal = () => {
     </div>
 
          <div style={{marginTop:'20px'}}>
-            <Button type='submit' labe={'Discription'} variant='contained'  >Save</Button>
+            {edit?<Button type='submit'  variant='contained'  >Update</Button>:
+            <Button type='submit'  variant='contained'  >Save</Button>}
          </div>
       </form>
    )

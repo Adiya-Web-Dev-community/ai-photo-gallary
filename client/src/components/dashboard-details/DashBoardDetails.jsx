@@ -110,7 +110,8 @@ const DashBoardDetails = () => {
           },
         });
         if (response.data.success) {
-          setDashboardData({...response.data.data[0],          socialLink:dummyArray
+          setDashboardData({...response.data.data[0],   
+                   socialLink:dummyArray
           });
         } 
       }catch(error){
