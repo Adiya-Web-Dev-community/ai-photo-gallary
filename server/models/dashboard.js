@@ -25,15 +25,6 @@ const dashboardSchema = new mongose.Schema({
     {
       linkType: {
         type: String,
-        enum: [
-          "facebook",
-          "instagram",
-          "twitter",
-          "linkedin",
-          "youtube",
-          "website",
-          "other",
-        ],
       },
       link: {
         type: String,

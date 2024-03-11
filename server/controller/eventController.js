@@ -242,20 +242,20 @@ const deleteSubEvent = async (req, res) => {
 
 const addYoutubeLinks = async (req, res) => {
     try {
-        const eventId = req.params.eventId;
+        const eventId = req.params.id;
         const { videoLinks } = req.body;
 
         if (
             !Array.isArray(videoLinks) ||
             videoLinks.some((video) => !video.title || !video.link)
         ) {
-            return res.status(400).json({ error: "Invalid videoLinks data" });
+            return res.status(400).json({ message: "Invalid videoLinks data" });
         }
 
-        const event = await eventModel.findById(eventId);
+        const event = await Event.findById(eventId);
 
         if (!event) {
-            return res.status(404).json({ error: "Event not found" });
+            return res.status(404).json({ message: "Event not found" });
         }
 
         event.videoLinks = event.videoLinks.concat(videoLinks);
@@ -264,9 +264,165 @@ const addYoutubeLinks = async (req, res) => {
 
         return res
             .status(200)
-            .json({ message: "YouTube links added successfully", event });
+            .json({ message: "YouTube links added successfully", data: event });
+    } catch (error) {
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+const deleteYoutubeLinks = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        const linkId = req.params.linkId;
+    
+        const event = await Event.findById(eventId);
+    
+        if (!event) {
+          return res.status(404).json({ message: "Event not found" });
+        }
+    
+        event.videoLinks = event.videoLinks.filter(
+          (video) => video._id.toString() !== linkId
+        );
+    
+        await event.save();
+    
+        return res.status(200).json({
+          message: "YouTube link deleted successfully",
+          data: event,
+        });
+      } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+      }
+};
+
+const getYoutubeLinks = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        console.log(eventId);
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        return res.status(200).json({ data: event.videoLinks });
     } catch (error) {
         console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+const updateYoutubeLinks = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        const linkId = req.params.linkId;
+        const updatedFields = req.body; 
+        console.log('Received updatedFields:', updatedFields);
+
+    
+        const event = await Event.findById(eventId);
+    
+        if (!event) {
+          return res.status(404).json({ message: 'Event not found' });
+        }
+    
+        const linkIndex = event.videoLinks.findIndex(link => link._id.toString() === linkId);
+    
+        if (linkIndex === -1) {
+          return res.status(404).json({ message: 'YouTube link not found' });
+        }
+    
+        const updatedLink = { ...event.videoLinks[linkIndex], ...updatedFields };
+        event.videoLinks[linkIndex] = updatedLink;
+    
+        await event.save();
+    
+        return res.status(200).json({ message: 'YouTube link updated successfully', data: event });
+      } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+      }
+}
+
+
+const addImages = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        const { imagesArray } = req.body;
+
+        if (
+            !Array.isArray(imagesArray) ||
+            imagesArray.some((image) => typeof image !== "string")
+        ) {
+            return res
+                .status(400)
+                .json({ message: "Invalid imagesArray data" });
+        }
+
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        event.imagesArray = event.imagesArray.concat(imagesArray);
+
+        await event.save();
+
+        return res
+            .status(200)
+            .json({ message: "Images added successfully", data: event });
+    } catch (error) {
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+const deleteImages = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        const { imageUrls } = req.body;
+
+        if (
+            !Array.isArray(imageUrls) ||
+            imageUrls.some((url) => typeof url !== "string")
+        ) {
+            return res.status(400).json({ message: "Invalid imageUrls data" });
+        }
+
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        event.imagesArray = event.imagesArray.filter(
+            (image) => !imageUrls.includes(image)
+        );
+
+        await event.save();
+
+        return res
+            .status(200)
+            .json({ message: "Images deleted successfully", data: event });
+    } catch (error) {
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+const getImagesArray = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ error: "Event not found" });
+        }
+
+        return res.status(200).json({ imagesArray: event.imagesArray });
+    } catch (error) {
         return res.status(500).json({ error: "Internal Server Error" });
     }
 };
@@ -280,4 +436,13 @@ module.exports = {
     addSubEvent,
     getSubEvent,
     deleteSubEvent,
+    addYoutubeLinks,
+    getYoutubeLinks,
+    updateYoutubeLinks,
+    deleteYoutubeLinks,
+    addImages,
+    deleteImages,
+    getImagesArray
+
+
 };
