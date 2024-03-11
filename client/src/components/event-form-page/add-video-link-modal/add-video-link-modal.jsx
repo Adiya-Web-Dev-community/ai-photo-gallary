@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { useNavigate,useParams } from 'react-router-dom';
 import { Button, TextField, TextareaAutosize } from '@mui/material';
 import axios from '../../../helpers/axios';
-const AddVideoLinkModal = ({edit,data,onClick}) => {
+const AddVideoLinkModal = ({edit,data,onClick,getEventDetails}) => {
    // const navigate = useNavigate()
  
 
@@ -57,13 +57,12 @@ const AddVideoLinkModal = ({edit,data,onClick}) => {
   })
       .then(() => {
          toast.success('Video Link Save')
+         getEventDetails()
       })
       .catch((err) => {
           console.log(err)
       })
-      if(onClick){
-         onClick()
-      }
+
  };
 
  useEffect(()=>{

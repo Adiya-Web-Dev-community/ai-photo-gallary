@@ -45,15 +45,7 @@ const EventFormPage = () => {
             })
     }
 
-    const editEventDetails = async () => {
-        await axios.put(`/edit-event-details/${eventName}/${eventId}`)
-            .then((res) => {
-                console.log(res)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }
+  
 
     const publishEvent = (eventData) => {
         if (eventData.published == true) {

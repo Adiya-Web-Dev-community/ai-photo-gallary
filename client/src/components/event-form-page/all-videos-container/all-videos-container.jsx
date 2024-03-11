@@ -21,9 +21,9 @@ const AllVideosContainer = ({ eventData, getEventDetails,onClick }) => {
             }
         })
             .then((res) => {
-                if (res.data.success) {
+                if (res.data) {
                     toast.success("video link deleted succcessfully!");
-                    // getEventDetails();
+                    getEventDetails();
                 }
             })
             .catch((err) => {
@@ -59,7 +59,7 @@ const AllVideosContainer = ({ eventData, getEventDetails,onClick }) => {
         {el.link?.length > 40 ? el.link.substring(0, 40) + '...' : el.description}
       </a>
                           <Button size='small' variant='outlined' sx={{margin:'0px 5px 0px 0px'}}
-                          onClick={deleteVideoLink(el._id)}
+                          onClick={()=>{deleteVideoLink(el._id)}}
                           >Delete</Button>
                           <Button size='small' variant='outlined'
                           onClick={()=>onClick(el)} 
