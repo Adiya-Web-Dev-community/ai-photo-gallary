@@ -18,7 +18,8 @@ const {
   deleteYoutubeLinks,
   addImages,
   deleteImages,
-  getImagesArray
+  getImagesArray,
+  addWatermarkInImages
 } = require("../controller/eventController");
 
 // Get all events
@@ -65,7 +66,7 @@ router.get("/event/:id/event-images", middleware, getImagesArray);
 
 router.post("/event/:id/event-images", middleware, addImages);
 
-router.put("/event/:id/event-images", middleware, deleteImages);
+router.put("/event/:id/event-images/add-watermark", middleware, addWatermarkInImages);
 
 router.delete("/event/:id/event-images", middleware, deleteImages);
 
