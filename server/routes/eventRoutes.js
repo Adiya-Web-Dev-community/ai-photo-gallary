@@ -41,4 +41,8 @@ router.delete("/subevent/:id", middleware, deleteSubEvent);
 // Delete a event
 router.delete("/event/:id", deleteEvent);
 
+
+// Update youtube links 
+router.put("/event/:id", middleware, updateEvent);
+
 module.exports = router;

@@ -240,6 +240,37 @@ const deleteSubEvent = async (req, res) => {
     }
 };
 
+const addYoutubeLinks = async (req, res) => {
+    try {
+        const eventId = req.params.eventId;
+        const { videoLinks } = req.body;
+
+        if (
+            !Array.isArray(videoLinks) ||
+            videoLinks.some((video) => !video.title || !video.link)
+        ) {
+            return res.status(400).json({ error: "Invalid videoLinks data" });
+        }
+
+        const event = await eventModel.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ error: "Event not found" });
+        }
+
+        event.videoLinks = event.videoLinks.concat(videoLinks);
+
+        await event.save();
+
+        return res
+            .status(200)
+            .json({ message: "YouTube links added successfully", event });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
 module.exports = {
     getEvents,
     getEvent,

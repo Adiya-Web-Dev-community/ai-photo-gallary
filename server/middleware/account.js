@@ -17,7 +17,7 @@ const accountMiddleware = (req, resp, next) => {
       }
     } else {
       resp
-        .status(404)
+        .status(401)
         .json({ success: false, msg: "token expired, access denied" });
     }
   } catch (err) {
