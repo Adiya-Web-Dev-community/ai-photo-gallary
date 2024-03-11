@@ -3,6 +3,8 @@ const Event = require("../models/event");
 const User = require("../models/user");
 const { eventConfirmation } = require("../helpers/emailHelper.js");
 const QRCode = require("qrcode");
+const Jimp = require('jimp');
+const axios = require('axios');
 
 // Get all events
 const getEvents = async (req, res) => {
@@ -276,14 +278,15 @@ const deleteYoutubeLinks = async (req, res) => {
         const linkId = req.params.linkId;
     
         const event = await Event.findById(eventId);
-    
+
         if (!event) {
-          return res.status(404).json({ message: "Event not found" });
+          return res.status(404).json({ message: 'Event not found' });
         }
-    
+      
         event.videoLinks = event.videoLinks.filter(
           (video) => video._id.toString() !== linkId
         );
+      
     
         await event.save();
     
@@ -426,6 +429,13 @@ const getImagesArray = async (req, res) => {
         return res.status(500).json({ error: "Internal Server Error" });
     }
 };
+
+
+// const updateImages = async (req, res) => {
+//     try {
+        
+//     }
+// }
 
 module.exports = {
     getEvents,
