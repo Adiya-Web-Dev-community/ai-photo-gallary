@@ -45,6 +45,22 @@ const eventSchema = new mongose.Schema({
             type : String
         }
     ],
+    videoLinks : [
+        {
+            title : {
+                type : String
+            },
+            link : {
+                type : String
+            },
+            description :{
+                type : String
+            },
+            thumbnail : {
+                type : String
+            }
+        }
+    ],
     waterMarks : [
         {
             type : String
