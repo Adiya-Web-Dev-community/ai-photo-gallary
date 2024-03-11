@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useParams } from 'react-router-dom';
 import './create-event-pop-up.css'
 import { RxCross1 } from 'react-icons/rx';
 import { useEffect, useState } from 'react';
@@ -19,6 +19,8 @@ const CreateEventPopup = ({ handleClose, getAllEvents }) => {
     const handleCreateEventForm = (e) => {
         setCreateEventForm({ ...createEventForm, [e.target.name]: e.target.value })
     }
+
+
 
     const coverPageUpload = async (e) => {
         e.preventDefault();
@@ -57,17 +59,8 @@ const CreateEventPopup = ({ handleClose, getAllEvents }) => {
                 authorization: token
             }
         })
-            .then((res) => {
-                if (res.data.success) {
-                    console.log(res.data)
-                    const eventName = res.data.message.eventName;
-                    const eventId = res.data.message._id;
-                    dispatch(getCreateEventData(createEventForm))
-                    getAllEvents()
-                    setCoverPageURL()
-                    setRunPostForm(false)
-                    handleClose()
-                }
+            .then(() => {
+               toast.success('Video Link Save')
             })
             .catch((err) => {
                 console.log(err)
@@ -96,16 +89,12 @@ const CreateEventPopup = ({ handleClose, getAllEvents }) => {
                     <input type="date" name='eventDate' onChange={handleCreateEventForm} />
                 </section>
                 <section>
-                    {coverPage ?
-                        <img src={URL.createObjectURL(coverPage)} style={{ width: '250px', height: '200px', border: '1px solid black' }} />
-                        :
-                        null
-                        // <img src='' alt='Event Cover Page(1080 × 1080)' style={{ width: '250px', height: '200px', border: '1px solid black' }} />
-                    }
+                    <label>Full Access</label>
+                    <input type="checkbox"  />
                 </section>
                 <section>
-                    <label>Event Cover Page(1080 × 1080)</label>
-                    <input type="file" name='' onChange={(e) => setCoverPage(e.target.files[0])} />
+                    <label>Face Search</label>
+                    <input type="checkbox"  />
                 </section>
             </div>
             <div className='create-event-pop-up-save-btn-container'>
