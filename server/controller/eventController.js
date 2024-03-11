@@ -413,8 +413,8 @@ const deleteImages = async (req, res) => {
 
 const getImagesArray = async (req, res) => {
     try {
-        const eventId = req.params.id;
 
+        const eventId = req.params.id;
         const event = await Event.findById(eventId);
 
         if (!event) {

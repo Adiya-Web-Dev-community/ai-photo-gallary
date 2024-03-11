@@ -61,5 +61,14 @@ router.get("/event/:id/youtube-links", middleware, getYoutubeLinks);
 // Delete youtube links
 router.delete("/event/:id/youtube-links/:linkId", middleware, deleteYoutubeLinks);
 
+router.get("/event/:id/event-images", middleware, getImagesArray);
+
+router.post("/event/:id/event-images", middleware, addImages);
+
+router.put("/event/:id/event-images", middleware, deleteImages);
+
+router.delete("/event/:id/event-images", middleware, deleteImages);
+
 
 module.exports = router;
+
