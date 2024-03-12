@@ -260,7 +260,6 @@ const addYoutubeLinks = async (req, res) => {
             return res.status(404).json({ message: "Event not found" });
         }
         event.videoLinks = [...event.videoLinks, ...videoLinks];
-        
 
         await event.save();
         return res
@@ -344,12 +343,10 @@ const updateYoutubeLinks = async (req, res) => {
 
         await event.save();
 
-        return res
-            .status(200)
-            .json({
-                message: "YouTube link updated successfully",
-                data: event,
-            });
+        return res.status(200).json({
+            message: "YouTube link updated successfully",
+            data: event,
+        });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: "Internal Server Error" });
@@ -429,66 +426,87 @@ const getImagesArray = async (req, res) => {
             return res.status(404).json({ error: "Event not found" });
         }
 
-        return res.status(200).json({ imagesArray: event.imagesArray });
+        const page = parseInt(req.query.page) || 1; 
+        const pageSize = parseInt(req.query.pageSize) || 9; 
+
+        const startIndex = (page - 1) * pageSize;
+
+        const paginatedImages = event.imagesArray.slice(startIndex, startIndex + pageSize);
+
+        return res.status(200).json({
+            imagesArray: paginatedImages,
+            currentPage: page,
+            totalPages: Math.ceil(event.imagesArray.length / pageSize),
+            imagesPerPage: pageSize
+        });
     } catch (error) {
         return res.status(500).json({ error: "Internal Server Error" });
     }
 };
-
 const addWatermarkInImages = async (req, res) => {
     try {
-        const eventId = req.params.id;
         const { imagesArray, watermarkUrl } = req.body;
-
-        if (!Array.isArray(imagesArray) || typeof watermarkUrl !== "string") {
-            return res.status(400).json({ message: "Invalid request data" });
+        const eventId = req.params.id;
+    
+        if (!Array.isArray(imagesArray) || typeof watermarkUrl !== 'string') {
+          return res.status(400).json({ error: 'Invalid input data' });
         }
-
-        const event = await Event.findById(eventId);
-
-        if (!event) {
-            return res.status(404).json({ message: "Event not found" });
-        }
-
-        const watermarkedImages = [];
-
+    
+        const watermarkedImagesArray = [];
+    
         for (const imageUrl of imagesArray) {
-            const outputFilePath = `./path-to-save-watermarked-images/${Date.now()}_${Math.random()}.jpg`;
-            await addWatermarkToImage(imageUrl, watermarkUrl, outputFilePath);
-            watermarkedImages.push(outputFilePath);
+          const watermarkedImage = await addWatermarkToImage(imageUrl, watermarkUrl);
+          watermarkedImagesArray.push(watermarkedImage);
         }
-
-        event.imagesArray = watermarkedImages;
+    
+        // Update the event's imagesArray in the database
+        const event = await Event.findById(eventId);
+    
+        if (!event) {
+          return res.status(404).json({ error: 'Event not found' });
+        }
+    
+        // Update the imagesArray with the watermarked images
+        event.imagesArray = watermarkedImagesArray;
+    
+        // Save the updated event
         await event.save();
-
-        return res.status(200).json({
-            message:
-                "Watermark added to images and imagesArray updated successfully",
-            data: event,
-        });
-    } catch (error) {
+    
+        return res.status(200).json({ message: 'Watermark added successfully', data: event });
+      } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: "Internal Server Error" });
-    }
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
 };
 
-async function addWatermarkToImage(imageUrl, watermarkUrl, outputFilePath) {
+async function addWatermarkToImage(imageUrl, watermarkUrl) {
     try {
-        const originalImage = await Jimp.read(imageUrl);
-        const watermark = await Jimp.read(watermarkUrl);
-        watermark.resize(originalImage.getWidth() * 0.2, Jimp.AUTO);
-        const x = originalImage.getWidth() - watermark.getWidth() - 10;
-        const y = originalImage.getHeight() - watermark.getHeight() - 10;
-        originalImage.composite(watermark, x, y, {
-            mode: Jimp.BLEND_SOURCE_OVER,
-            opacitySource: 0.5,
-        });
-        await originalImage.writeAsync(outputFilePath);
-        console.log("Watermark added to", outputFilePath);
+      const originalImage = await Jimp.read(imageUrl);
+      const watermark = await Jimp.read(watermarkUrl);
+  
+      // Resize the watermark to fit a percentage of the original image
+      watermark.resize(originalImage.getWidth() * 0.2, Jimp.AUTO);
+  
+      // Calculate the position to place the watermark (e.g., bottom right corner)
+      const x = originalImage.getWidth() - watermark.getWidth() - 10;
+      const y = originalImage.getHeight() - watermark.getHeight() - 10;
+  
+      // Compose the images by overlaying the watermark
+      originalImage.composite(watermark, x, y, {
+        mode: Jimp.BLEND_SOURCE_OVER,
+        opacitySource: 0.5, // Adjust the watermark opacity as needed
+      });
+  
+      // Convert the image to base64
+      const base64data = await originalImage.getBase64Async(Jimp.AUTO);
+      const img = await imgResize(base64data)
+      return img.toString();
     } catch (error) {
-        console.error("Error adding watermark:", error.message);
+      throw new Error(`Error adding watermark: ${error.message}`);
     }
-}
+  }
+  
+
 
 module.exports = {
     getEvents,
@@ -506,5 +524,5 @@ module.exports = {
     addImages,
     deleteImages,
     getImagesArray,
-    addWatermarkInImages
+    addWatermarkInImages,
 };
