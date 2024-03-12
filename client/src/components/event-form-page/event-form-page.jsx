@@ -5,11 +5,11 @@ import { ImBin } from 'react-icons/im';
 import { useEffect, useState } from 'react';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import dummyImg from '../../assets/fr-gallery-dummyimg.jpg'
-import { Modal, Box } from "@mui/material";
+import { Modal, Box, Card } from "@mui/material";
 import AddVideoLinkModal from './add-video-link-modal/add-video-link-modal';
 import { useSelector } from 'react-redux';
 import axios from '../../helpers/axios'
-import { useParams } from 'react-router-dom';
+import { useParams,useNavigate } from 'react-router-dom';
 import AddImageModal from './add-image-modal/add-image-modal';
 import AllImagesContainer from './all-images-container/all-images-container';
 import AllVideosContainer from './all-videos-container/all-videos-container';
@@ -26,7 +26,10 @@ const EventFormPage = () => {
         isEdit:false,
         data:{}
     }) 
+    const [selectedImage,setSelectedImage] = useState('')
 
+    const [allImages,setAllImages] = useState([])
+    const navigate = useNavigate()
 
     const getEventDetails = async () => {
         await axios.get(`/event/${eventId}/youtube-links`,
@@ -63,6 +66,23 @@ const EventFormPage = () => {
                 console.log(err)
             })
     }
+
+    const getAllThePostImage = async (url)=>{
+        await axios.get(`/event/${eventId}/event-images`,
+        {
+            headers: {
+              authorization: token,
+            },
+          }
+        ).then((res)=>{
+            setAllImages(res.data.imagesArray)
+    
+        }).catch((error)=>{
+            console.log(error)
+        })
+    
+       }
+    
 
     const style = {
         position: "absolute",
@@ -108,8 +128,10 @@ const EventFormPage = () => {
 
     useEffect(() => {
         getEventDetails();
+        getAllThePostImage()
     }, [])
-
+  
+console.log(allImages)
     return (
         <div className="event-form-page-wrapper">
             <section className="event-form-page-header">
@@ -136,17 +158,17 @@ const EventFormPage = () => {
                                 style={{ backgroundColor: containerRendering == 'allImages' ? '#f0f0f0' : 'transparent' }}
                                 onClick={() => setContainerRendering('allImages')}
                             >
-                                SHOW ALL
+                                IMAGES
                             </button>
                         </section>
-                        <section>
+                        {/* <section>
                             <button
                                 onClick={() => setContainerRendering('unpublishedImages')}
                                 style={{ backgroundColor: containerRendering == 'unpublishedImages' ? '#f0f0f0' : 'transparent' }}
                             >
                                 UNPUBLISHED IMAGES
                             </button>
-                        </section>
+                        </section> */}
                         <section>
                             <button
                                 onClick={() => setContainerRendering('videos')}
@@ -174,10 +196,14 @@ const EventFormPage = () => {
                             })}
                         </ul> */}
                         <section style={{ display: containerRendering == 'allImages' ? 'block' : 'none' }}>
-                            <AllImagesContainer eventData={eventData} setOpenImagesCorousalModal={setOpenImagesCorousalModal} />
+                            <AllImagesContainer eventData={allImages} 
+                                                        setSelectedImage={setSelectedImage}
+                            setOpenImagesCorousalModal={setOpenImagesCorousalModal} />
                         </section>
                         <section style={{ display: containerRendering == 'unpublishedImages' ? 'block' : 'none' }}>
-                            <UnpublishedImagesContainer eventData={eventData} getEventDetails={getEventDetails} />
+                            <UnpublishedImagesContainer eventData={eventData} getEventDetails={getEventDetails} 
+                            
+                            />
                         </section>
                         <section  style={{ display: containerRendering == 'videos' ? 'block' : 'none' }}>
                             <AllVideosContainer onClick={
@@ -185,24 +211,25 @@ const EventFormPage = () => {
                                     setIsEditData(prev=>({...prev,isEdit:true,data:el}))
                                     handleOpenVideoLinkModal()
                                 }
-                            }  eventData={eventData} getEventDetails={getEventDetails} />
+                            }  eventData={eventData}
+                            getEventDetails={getEventDetails} />
                         </section>
                     </div>
                 </section>
-                <section className='rb'>
-                    <div>
-                        <div className='cover-pic-preview-image-container'>
+                <Card sx={{border:'1px solid rgba(155, 255, 255);',margin:'10px'}}>
+                    <Card>
+                        <div >
                             {/* <img className='cover-pic-preview-image' src={URL.createObjectURL(coverPic)} /> */}
-                            <img className='cover-pic-preview-image' src={eventData?.eventCoverPage} />
-                            <p className='cover-pic-preview-image-dustbinIcon' onClick={() => setCoverPic("")}>
+                            <img  src={eventData?.eventCoverPage} />
+                            <p onClick={() => setCoverPic("")}>
                                 <input id='cover-pic-input' type='file' onChange={editCoverPage} />
                                 <label htmlFor='cover-pic-input'>change cover page 1080 × 1080</label>
                             </p>
                         </div>
-                        <button className='rounded-btns'>
+                        <button >
                             change cover page
                         </button>
-                    </div>
+                    </Card>
                     <div>
                         <textarea className='event-form-edit-textarea'
                             placeholder='Edit Maximum 150 Characters' />
@@ -213,7 +240,9 @@ const EventFormPage = () => {
                     </div>
                     <div>
                         <div style={{ textAlign: 'center', marginTop: '10px' }}>
-                            <button className='rounded-btns'>
+                            <button className='rounded-btns'
+                            onClick={()=>navigate(`/facerecognitiongallery/${eventName}/${eventName}/share-with-client`)}
+                            >
                                 Share with client
                             </button>
                         </div>
@@ -231,20 +260,27 @@ const EventFormPage = () => {
                             </button>
                         </div>
                     </div>
-                </section>
+                </Card>
             </main>
 
             {/* Add Image Modal */}
             <Modal
                 open={openAddImagesModal}
-                onClose={handleCloseAddImagesModal}
+                onClose={()=>{
+                    getAllThePostImage()
+                    handleCloseAddImagesModal()
+                }}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
                 className="add-images-popup-modal"
             >
                 <Box sx={style}>
                     <AddImageModal
-                        handleCloseAddImagesModal={handleCloseAddImagesModal}
+                        handleCloseAddImagesModal={()=>{
+                            getAllThePostImage()
+                            handleCloseAddImagesModal()
+                        }
+                        }
                         imgArr={imgArr} setImgArr={setImgArr}
                         imgLinkArr={imgLinkArr}
                         setImgLinkArr={setImgLinkArr}
@@ -302,6 +338,7 @@ const EventFormPage = () => {
                         getEventDetails={getEventDetails}
                         eventData={eventData}
                         imageIndex={imageIndex}
+                        imgUrl={selectedImage}
                         setImageIndex={setImageIndex}
                     />
                 </Box>

@@ -30,7 +30,7 @@ function App() {
           <Route path='/event-form-page/:eventName/:eventId' element={<EventFormPage />} />
           <Route path='/gallary/:id' element={<Gallary />} />
           <Route path='/watermaker-setup' element={<SetupWatermark />} />
-          <Route path='/facerecognitiongallery' element={<FaceRecognitionGallery />} />
+          <Route path='/facerecognitiongallery/:eventName/:eventId/share-with-client' element={<FaceRecognitionGallery />} />
           <Route path='/register-new-user' element={<RegisterUser />} />
           <Route path='/set-password' element={<SetPassword />} />
           //full access

@@ -1,139 +1,165 @@
 import './add-image-modal.css'
 import { toast } from "react-hot-toast";
 import axios from '../../../helpers/axios'
-import { useEffect, useState } from 'react';
+import React,{ useEffect, useState,useRef } from 'react';
 import { compressImage,resizeImage,convertBytesToMB } from '../../../function/function';
-const AddImageModal = ({
-    handleCloseAddImagesModal,
-    imgArr,
-    setImgArr,
-    imgLinkArr,
-    setImgLinkArr,
-    eventData,
-    getEventDetails }) => {
+import { uploadImage } from '../../../function/imageFun';
+import { useParams } from 'react-router-dom';
+import { Button,Typography,Box } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+import PropTypes from 'prop-types';
 
-    const [uploadToDB, setUploadToDB] = useState(false)
+const AddImageModal = ({handleCloseAddImagesModal}) => {
 
-    // const handleImages = (e) => {
-    //     setImgArr([...e.target.files])
-    // }
+    
+    const [uploadToDB, setUploadToDB] = useState({
+        fileSize:0,
+        uploadImage:[]
+    })
 
-    // for (let i = 0; i < imgArr.length; i++) {
-    //     console.log(`imgArr[${i}] => `, URL.createObjectURL(imgArr[i]))
-    // }
+   const {eventName,eventId}= useParams()
+   const inputRef = useRef(null)
+   const requestQueue = useRef([]);
+   const [processingQueue, setProcessingQueue] = useState(false);
 
-    // const uploadImages = async () => {
-    //     if (!imgArr.length) {
-    //         return toast.error('no image selected')
-    //     }
-    //     let arr = [];
-    //     toast.loading("Uploading images! please wait");
-    //     for (let i = 0; i < imgArr.length; i++) {
-    //         const imgData = new FormData()
-    //         imgData.append("file", imgArr[i])
-    //         imgData.append("upload_preset", "ketanInstaClone")
-    //         await axios.post("https://api.cloudinary.com/v1_1/ketantb/image/upload", imgData)
-    //             .then((res) => {
-    //                 arr.push({ published: false, image: res.data.url })
-    //                 // arr.push(res.data.url)
-    //             })
-    //             .catch((err) => {
-    //                 console.log(err)
-    //             })
-    //     }
-    //     toast.dismiss()
-    //     console.log(arr)
-    //     setImgLinkArr(arr)
-    //     !uploadToDB ? setUploadToDB(true) : setUploadToDB(false)
-    // }
+   const token = localStorage.getItem("token");
+         
 
-    // const patchImagestoDB = () => {
-    //     let array = [...eventData.eventImages, ...imgLinkArr]
-    //     console.log("array => ", array)
-    //     axios.patch(`/update-event-images/${eventData._id}`, array)
-    //         .then((res) => {
-    //             console.log(res)
-    //             if (res.data.success) {
-    //                 setImgArr([])
-    //                 setUploadToDB(false)
-    //                 getEventDetails()
-    //                 handleCloseAddImagesModal()
-                    
-    //             }
-    //         })
-    //         .catch((err) => {
-    //             console.log(err)
-    //         })
-    // }
+   const handalePostIMage= async (url)=>{
+    await axios.post(`/event/${eventId}/event-images`,{
+        imagesArray:[url]
+    },
+    {
+        headers: {
+          authorization: token,
+        },
+      }
+    ).then((res)=>{
+        processQueue();
+     return res
+    }).catch((error)=>{
+        console.log(error)
+    })
 
-    // useEffect(() => {
-    //     if (uploadToDB) {
-    //         patchImagestoDB();
-    //     }
-    // }, [uploadToDB])
+   }
+
+   const processQueue = async () => {
+    if (!processingQueue && requestQueue.current.length > 0) {
+        setProcessingQueue(true);
+        const url = requestQueue.current.shift();
+        await handalePostIMage(url);
+        setUploadToDB(prev => ({
+            ...prev,
+            uploadImage: [...prev.uploadImage, url]
+        }));
+        setProcessingQueue(false);
+    }
+};
+
+// useEffect(() => {
+//     processQueue();
+// }, [processingQueue]);
 
 
-        
-    const getBase64Size = (base64String) => {
-        // Remove data URL prefix (e.g., "data:image/jpeg;base64,") before calculating length
-        const base64Data = base64String.split(',')[1];
-        // Get the length of the Base64 string in bytes
-        return Math.round((base64Data.length * 3) / 4 - 2);
-      };
-        
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        const reader = new FileReader();
-      
-        reader.onload = () => {
-          const base64String = reader.result;
-          const originalSize = base64String.length;
+const handleFileChange = async (event) => {
+    const files = event.target.files;
+    setUploadToDB(prev => ({ ...prev, fileSize: files.length,uploadImage:[] }));
 
-          setUploadToDB(base64String)
+    for (let i = 0; i < files.length; i++) {
+        try {
+            const url = await uploadImage(eventName, files[i]);
+            await handalePostIMage(url); // Wait for the previous request to complete
+            setUploadToDB(prev => ({
+                ...prev,
+                uploadImage: [...prev.uploadImage, url]
+            }));
+        } catch (error) {
+            console.error("Error uploading image:", error);
+            // Handle error if needed
+        }
+    }
+};
 
-        //   console.log('Original Size:', convertBytesToMB(originalSize));
-      
-          resizeImage(base64String, 800, 600, (resizedImage) => {
-            compressImage(resizedImage, (compressedImage) => {
-                console.log(compressedImage)
-              const newBits = getBase64Size(compressedImage);
-             console.log(newBits) 
-              console.log('New Size:',convertBytesToMB(compressedImage.length));
-              console.log('Size Difference:', convertBytesToMB(originalSize - compressedImage.length));
-            });
-          });
-        };
-      
-        reader.readAsDataURL(file);
-      };
+ 
 
-      console.log(uploadToDB)
-      
+
+    console.log((uploadToDB.uploadImage.length /uploadToDB.fileSize||0 )*100)
+          
     return (
         <div className='add-image-container'>
+                <input ref={inputRef} style={{display:'none'}} type='file' multiple  onChange={handleFileChange} />
             <section>
-                <input type='file'  onChange={handleFileChange} />
-            </section>
-            <section>
-                {/* {imgArr.length ?
-                    <ul className='add-image-ul'>
-                        {imgArr.map((image) => {
+                {uploadToDB.uploadImage.length ?
+                    <ul className='add-image-ul' style={{display:'grid',gridTemplateColumns:`repeat(4,1fr)`}}>
+                        {uploadToDB.uploadImage.map((image,i) => {
                             return (
-                                <li key={URL.createObjectURL(image)}>
-                                    <img src={URL.createObjectURL(image)} />
+                                <li key={i} >
+                                    <img src={image} />
                                 </li>
                             )
                         })}
                     </ul>
-                    : null} */}
+                    : null}
             </section>
-            <section>
-                {/* <button onClick={handleFileChange}>
+            {((uploadToDB.uploadImage.length /uploadToDB.fileSize||0 )*100) ===100?
+             <div style={{display:'flex'}}>
+             <Button   size='large' variant='outlined' sx={{marginTop:'10px',marginRight:'10px'}}
+             onClick={()=>{
+                inputRef.current.click()  
+            }}
+             >
+              Upload More
+             </Button>
+             <Button onClick={()=>handleCloseAddImagesModal()}  size='large' color='error' variant='outlined' sx={{marginTop:'10px'}}>
+              Close
+             </Button>
+             </div>
+            :
+                <Button size='large' variant='outlined' sx={{width:'300px',marginTop:'10px'}} onClick={()=>{
+                    inputRef.current.click()
+                }}>
                     upload images
-                </button> */}
-            </section>
+                    <CircularProgressWithLabel sx={{margin:'0px 10px'}} value={(uploadToDB.uploadImage.length /uploadToDB.fileSize||0 )*100} />
+                </Button>
+}
         </div>
     )
 }
+
+  
+  function CircularProgressWithLabel(props) {
+    return (
+      <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+        <CircularProgress variant="determinate" {...props} />
+        <Box
+          sx={{
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            position: 'absolute',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography variant="caption" component="div" color="text.secondary">
+            {`${Math.round(props.value)}%`}
+          </Typography>
+        </Box>
+      </Box>
+    );
+  }
+  
+  CircularProgressWithLabel.propTypes = {
+    /**
+     * The value of the progress indicator for the determinate variant.
+     * Value between 0 and 100.
+     * @default 0
+     */
+    value: PropTypes.number.isRequired,
+  };
+  
+  
 
 export default AddImageModal

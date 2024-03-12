@@ -13,31 +13,15 @@ const DashBoardDetails = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [companyDetails, setCompanyDetails] = useState();
-  const [isEdit,setIsEdit] = useState(false)
+  const [isEdit,setIsEdit] = useState(true)
   
-  const dummyArray = [
-    {
-      id: 1,
-      linkType: "facebook",
-      link: "https://www.facebook.com/example"
-    },
-    {
-      id: 2,
-      linkType: "instagram",
-      link: "https://www.instagram.com/example"
-    },
-    {
-      id: 3,
-      linkType: "twitter",
-      link: "https://www.twitter.com/example"
-    },
+ 
   
-  ];
   const [dashboardData, setDashboardData] = useState({
     companyName: "",
     contactNo: "",
     companyEmail: "",
-    socialLink: dummyArray,
+    socialLink: [],
     companyLogo: "",
     address: "",
   });
@@ -85,7 +69,6 @@ const DashBoardDetails = () => {
 
   //HANDLE SAVE
   const handleSave = async () => {
-  
 
     const response = await axios.put(`/admin/dashboard`, dashboardData, {
       headers: {
@@ -111,7 +94,7 @@ const DashBoardDetails = () => {
         });
         if (response.data.success) {
           setDashboardData({...response.data.data[0],   
-                   socialLink:dummyArray
+                   socialLink:[]
           });
         } 
       }catch(error){
