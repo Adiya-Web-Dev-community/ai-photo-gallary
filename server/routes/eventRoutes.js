@@ -19,7 +19,10 @@ const {
   addImages,
   deleteImages,
   getImagesArray,
-  addWatermarkInImages
+  addWatermarkInImages,
+  getClientImagesArray,
+  pinValidate,
+  getClientYoutubeLinks,
 } = require("../controller/eventController");
 
 // Get all events
@@ -69,6 +72,15 @@ router.post("/event/:id/event-images", middleware, addImages);
 router.put("/event/:id/event-images/add-watermark", middleware, addWatermarkInImages);
 
 router.delete("/event/:id/event-images", middleware, deleteImages);
+
+
+
+// Client side apis
+router.post("/:eventName/event-access/:id",pinValidate)
+
+router.get("/event/images/show-all/:id",getClientImagesArray)
+
+router.get("/event/videos/show-all/:id", getClientYoutubeLinks)
 
 
 module.exports = router;

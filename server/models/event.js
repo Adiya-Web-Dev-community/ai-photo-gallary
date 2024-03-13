@@ -30,20 +30,15 @@ const eventSchema = new mongose.Schema({
             ref : "event"
         }
     ],
-    fullAccess:{
-        accessStatus:{type:Boolean, default :false},
-        qrCode:{type:String},
-        link:{type:String},
-    },
-    faceSearch:{
-        accessStatus:{type:Boolean, default :false},
-        qrCode:{type:String},
-        link:{type:String},
-    },
     qrCode :{
         type : String
     },
+    faceQrCode : {
+        type : String
+    },
+    // Access link
 
+    // Full access event 
     link:{
         type : String
     },
@@ -56,28 +51,9 @@ const eventSchema = new mongose.Schema({
         }
     ],
     emailsArray : [
-        {
-            email : { 
-                type : String,
-            },
-            emailSent : {
-                type : Boolean,
-                default : false,
-            }
-        
-        }
+        {type : String}
     ],
-    whatsappArray : [
-        {
-            number : { 
-                type : String,
-            },
-            messageSent : {
-                type : Boolean,
-                default : false,
-            }
-        }
-    ],
+
     videoLinks : [
         {
             title : {
@@ -157,26 +133,20 @@ const eventSchema = new mongose.Schema({
         enum : ["published", "unpublished"],
         default : "unpublished"
     },
-    pin :{
+    fullAccessPin :{
         type : String
-    },
-    pinRequired : {
-        type : Boolean,
-        default : false
     },
     faceSearchPin : {
         type : String
     },
-    faceSearchPinRequired : {
-        type : Boolean, 
+    // Settings
+    faceSearchAccess : {
+        type : Boolean,
         default : false
     },
-    // Settings
-    faceSearch : {
-        type : Boolean
-    },
     fullEventAccess : {
-        type : Boolean
+        type : Boolean,
+        default : false
     },
     allowUserToPostImages : {
         type : Boolean,

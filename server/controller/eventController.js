@@ -1,7 +1,10 @@
 const DashBoard = require("../models/dashboard");
 const Event = require("../models/event");
 const User = require("../models/user");
-const { eventConfirmation } = require("../helpers/emailHelper.js");
+const {
+    eventConfirmation,
+    sendEventMails,
+} = require("../helpers/emailHelper.js");
 const QRCode = require("qrcode");
 const Jimp = require("jimp");
 const axios = require("axios");
@@ -78,13 +81,13 @@ const addEvent = async (req, res) => {
             ...req.body,
             dashboardId: user.dashboardId,
         });
-        let faceSearchLink = `http://localhost:5173/${user.dashboardId.companyName}/face-search/event/${event._id}`;
-        let link = `http://localhost:5173/${user.dashboardId.companyName}/event-access/${event._id}`
+        let faceSearchLink = `http://localhost:5173/:${user.dashboardId.eventName}/face-search/event/:${event._id}`;
+        let link = `http://localhost:5173/:${user.dashboardId.eventName}/event-access/:${event._id}`;
         event.link = link;
         event.faceSearchLink = faceSearchLink;
-
-        const qrCode = await QRCode.toDataURL(faceSearchLink);
-
+        const qrCode = await QRCode.toDataURL(link);
+        const faceQrCode = await QRCode.toDataURL(faceSearchLink);
+        event.faceQrCode = faceQrCode
         event.qrCode = qrCode;
         await event.save();
         eventConfirmation(
@@ -93,7 +96,8 @@ const addEvent = async (req, res) => {
             event.name,
             event.qrCode,
             event.link,
-            event.faceSearchLink
+            event.faceSearchLink,
+            event.faceQrCode,
         );
 
         return res.status(200).json({
@@ -429,18 +433,21 @@ const getImagesArray = async (req, res) => {
             return res.status(404).json({ error: "Event not found" });
         }
 
-        const page = parseInt(req.query.page) || 1; 
-        const pageSize = parseInt(req.query.pageSize) || 9; 
+        const page = parseInt(req.query.page) || 1;
+        const pageSize = parseInt(req.query.pageSize) || 9;
 
         const startIndex = (page - 1) * pageSize;
 
-        const paginatedImages = event.imagesArray.slice(startIndex, startIndex + pageSize);
+        const paginatedImages = event.imagesArray.slice(
+            startIndex,
+            startIndex + pageSize
+        );
 
         return res.status(200).json({
             imagesArray: paginatedImages,
             currentPage: page,
             totalPages: Math.ceil(event.imagesArray.length / pageSize),
-            imagesPerPage: pageSize
+            imagesPerPage: pageSize,
         });
     } catch (error) {
         return res.status(500).json({ error: "Internal Server Error" });
@@ -450,80 +457,168 @@ const addWatermarkInImages = async (req, res) => {
     try {
         const { imagesArray, watermarkUrl } = req.body;
         const eventId = req.params.id;
-    
-        if (!Array.isArray(imagesArray) || typeof watermarkUrl !== 'string') {
-          return res.status(400).json({ error: 'Invalid input data' });
+
+        if (!Array.isArray(imagesArray) || typeof watermarkUrl !== "string") {
+            return res.status(400).json({ error: "Invalid input data" });
         }
-    
+
         const watermarkedImagesArray = [];
-    
+
         for (const imageUrl of imagesArray) {
-          const watermarkedImage = await addWatermarkToImage(imageUrl, watermarkUrl);
-          watermarkedImagesArray.push(watermarkedImage);
+            const watermarkedImage = await addWatermarkToImage(
+                imageUrl,
+                watermarkUrl
+            );
+            watermarkedImagesArray.push(watermarkedImage);
         }
-    
+
         // Update the event's imagesArray in the database
         const event = await Event.findById(eventId);
-    
+
         if (!event) {
-          return res.status(404).json({ error: 'Event not found' });
+            return res.status(404).json({ error: "Event not found" });
         }
-    
+
         // Update the imagesArray with the watermarked images
         event.imagesArray = watermarkedImagesArray;
-    
+
         // Save the updated event
         await event.save();
-    
-        return res.status(200).json({ message: 'Watermark added successfully', data: event });
-      } catch (error) {
+
+        return res
+            .status(200)
+            .json({ message: "Watermark added successfully", data: event });
+    } catch (error) {
         console.error(error);
-        return res.status(500).json({ error: 'Internal Server Error' });
-      }
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
 };
 
 async function addWatermarkToImage(imageUrl, watermarkUrl) {
     try {
-      const originalImage = await Jimp.read(imageUrl);
-      const watermark = await Jimp.read(watermarkUrl);
-  
-      // Resize the watermark to fit a percentage of the original image
-      watermark.resize(originalImage.getWidth() * 0.2, Jimp.AUTO);
-  
-      // Calculate the position to place the watermark (e.g., bottom right corner)
-      const x = originalImage.getWidth() - watermark.getWidth() - 10;
-      const y = originalImage.getHeight() - watermark.getHeight() - 10;
-  
-      // Compose the images by overlaying the watermark
-      originalImage.composite(watermark, x, y, {
-        mode: Jimp.BLEND_SOURCE_OVER,
-        opacitySource: 0.5, // Adjust the watermark opacity as needed
-      });
-  
-      // Convert the image to base64
-      const base64data = await originalImage.getBase64Async(Jimp.AUTO);
-      const img = await imgResize(base64data)
-      return img.toString();
+        const originalImage = await Jimp.read(imageUrl);
+        const watermark = await Jimp.read(watermarkUrl);
+
+        // Resize the watermark to fit a percentage of the original image
+        watermark.resize(originalImage.getWidth() * 0.2, Jimp.AUTO);
+
+        // Calculate the position to place the watermark (e.g., bottom right corner)
+        const x = originalImage.getWidth() - watermark.getWidth() - 10;
+        const y = originalImage.getHeight() - watermark.getHeight() - 10;
+
+        // Compose the images by overlaying the watermark
+        originalImage.composite(watermark, x, y, {
+            mode: Jimp.BLEND_SOURCE_OVER,
+            opacitySource: 0.5, // Adjust the watermark opacity as needed
+        });
+
+        // Convert the image to base64
+        const base64data = await originalImage.getBase64Async(Jimp.AUTO);
+        const img = await imgResize(base64data);
+        return img.toString();
     } catch (error) {
-      throw new Error(`Error adding watermark: ${error.message}`);
+        throw new Error(`Error adding watermark: ${error.message}`);
     }
-  }
-  
+}
 
-  const sendEmails = async (req, res) => {
+const sendEmails = async (req, res) => {
     try {
-        const eventId = req.params.id
-        const event = await Event.findById(eventId)
+        const eventId = req.params.id;
+        const event = await Event.findById(eventId);
 
-        const emails = event.emailsArray
-
-        
-    } catch (error){
+        const emailsArray = event.emailsArray;
         emailsArray.forEach((email) => {
             sendEventMails(email, event.description, event.pin, event.pin);
-          });
+        });
+        return res.status(200).json({
+            message:
+                "Emails sent successfully. Check your spam folder if you don't see it in your inbox. Thank you!",
+        });
+    } catch (error) {
+        return res.status(500).json({ error: "Internal Server Error" });
     }
-  }
+};
+
+const pinValidate = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        const event = await Event.findById(id);
+
+        if (!event) {
+            return res.status(404).json({ error: "Event not found" });
+        }
+        if(event.fullEventAccess===false){
+            return res.status(400).json({ error: "Event is not published" });
+        }
+        if (event.pin === req.body.pin) {
+            return res.status(200).json({
+                message: "Pin validated successfully",
+                data: {
+                    eventName: event.eventName,
+                    eventId: eventId,
+                    endPoint : `/event/:${eventName}/show-all/:${event.eventId}`
+                },
+            });
+        } else {
+            return res.status(400).json({ error: "Invalid pin" });
+        }
+    } catch (error) {
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+
+const getClientImagesArray = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ error: "Event not found" });
+        }
+
+        const page = parseInt(req.query.page) || 1;
+        const pageSize = parseInt(req.query.pageSize) || 9;
+
+        const startIndex = (page - 1) * pageSize;
+
+        const paginatedImages = event.imagesArray.slice(
+            startIndex,
+            startIndex + pageSize
+        );
+
+        return res.status(200).json({
+            imagesArray: paginatedImages,
+            currentPage: page,
+            totalPages: Math.ceil(event.imagesArray.length / pageSize),
+            imagesPerPage: pageSize,
+        });
+    } catch (error) {
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+
+const getClientYoutubeLinks = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        console.log(eventId);
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        return res.status(200).json({ data: event.videoLinks });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+
+
+
 
 
 module.exports = {
@@ -543,4 +638,9 @@ module.exports = {
     deleteImages,
     getImagesArray,
     addWatermarkInImages,
+    sendEmails,
+    getClientImagesArray,
+    pinValidate,
+    getClientYoutubeLinks,
+
 };
