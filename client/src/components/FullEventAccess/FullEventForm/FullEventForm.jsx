@@ -1,35 +1,57 @@
-import { useState } from 'react';
-import './FullEventForm.css';
-import axios from '../../../helpers/axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import "./FullEventForm.css";
+import axios from "../../../helpers/axios";
+import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const FullEventForm = () => {
-  //   const { eventId } = useParams();
-  const [eventData, setEventData] = useState({ fullAccess: false });
-  const [pin, setPin] = useState('');
-  const navigate  = useNavigate() 
-  const {eventId} = useParams()
-  // //fetch event details
-  // const fetchEventDetails = async () => {
-  //   const resp = await axios.get(`/events/${eventId}`);
-  //   //save event details in state => eventData
-  //   // check if full access to the event is given
-  // };
+  const { eventId } = useParams();
+  const [eventData, setEventData] = useState(null);
+  const [pin, setPin] = useState("");
+  const navigate = useNavigate();
 
-  //handle PIN check
-  const checkPinValidation = () => {
-    navigate(`/show-event-data/${eventId}`)
+  //fetch event details
+  const fetchEventDetails = async (eventId) => {
+    try {
+      const resp = await axios.get(`/event/${eventId}`);
+      console.log(resp.data.data);
+      setEventData(resp.data.data);
+    } catch (error) {
+      console.error("Error fetching event details:", error);
+    }
   };
 
-  return eventData?.fullAccess ? (
-    <div className="pirvate-container">
-      <h1>This Event is Private</h1>
-      <h2>Cannot Access this Event without Admin's Permission</h2>
-      <h3>Thank you</h3>
-    </div>
-  ) : (
+  const validatePin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `${eventData.eventName}/event-access/${eventId}`,
+        { pin }
+      );
+      if (response.data.success) {
+        // If PIN is valid, navigate to the show event data page
+        navigate(`/show-event-data/${eventId}`);
+      }
+    } catch (error) {
+      toast.error("Invalid PIN. Please try again.");
+    }
+  };
+
+  useEffect(() => {
+    fetchEventDetails(eventId);
+  }, [eventId]);
+
+  return eventData?.fullEventAccess ? (
     <div className="event-access-container">
-      <h1>EVENT NAME</h1>
+      <h1
+        style={{
+          fontSize: "1.5rem",
+          marginTop: "1.5rem",
+          marginBottom: "2rem",
+        }}
+      >
+        {eventData?.eventName}
+      </h1>
       <form className="event-form">
         <div>
           <p>Please enter PIN to access this event.</p>
@@ -44,11 +66,41 @@ const FullEventForm = () => {
             onChange={(e) => setPin(e.target.value)}
             className="pin-input"
           />
-          <button onClick={checkPinValidation} className="submit-button">
+          <button onClick={validatePin} className="submit-button">
             Submit
           </button>
         </div>
       </form>
+    </div>
+  ) : (
+    <div
+      className="private-container"
+      style={{ display: "flex", alignItems: "center", flexDirection: "column" }}
+    >
+      <h1
+        style={{
+          fontSize: "1.7rem",
+          fontWeight: "800",
+          marginBottom: "1rem",
+        }}
+      >
+        This Event is Private
+      </h1>
+      <h2
+        style={{
+          fontSize: "1.5rem",
+          marginBottom: "2rem",
+        }}
+      >
+        Cannot Access this Event without Admin's Permission
+      </h2>
+      <h3
+        style={{
+          fontSize: "1.2rem",
+        }}
+      >
+        Thank you
+      </h3>
     </div>
   );
 };
