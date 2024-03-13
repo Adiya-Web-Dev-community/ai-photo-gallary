@@ -16,7 +16,7 @@ const EventCard = ({ event }) => {
     const navigate  = useNavigate()
     return (
         <Card sx={{ borderRadius:'15px',padding:'10px',border:'1px solid',
-        borderColor:'rgb(187, 187, 187)'
+        borderColor:'rgb(187, 187, 187)', cursor:"pointer"
         }} onClick={() => {navigate(`/event-form-page/${event.eventName}/${event._id}`);}}>
       <CardMedia
         sx={{ height: 100,width:100,margin:'auto' }}
