@@ -16,6 +16,8 @@ import SetPassword from "./components/register-user/set-passsword";
 //public routes- full access  , face search
 import FullEventForm from "./components/FullEventAccess/FullEventForm/FullEventForm";
 import Event from "./components/FullEventAccess/Events/Event";
+// face search
+import EventAccessForm from "./components/event-access-form/event-access-form";
 
 function App() {
   return (
@@ -45,6 +47,11 @@ function App() {
             element={<FullEventForm />}
           />
           <Route path="/show-event-data/:eventId" element={<Event />} />
+          {/* face search */}
+          <Route
+            path="/face-search/event/:id"
+            element={<EventAccessForm />}
+          ></Route>
         </Routes>
       </div>
     </Provider>

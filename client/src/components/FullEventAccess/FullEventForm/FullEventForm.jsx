@@ -25,8 +25,8 @@ const FullEventForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `${eventData.eventName}/event-access/${eventId}`,
-        { pin }
+        `/${eventData.eventName}/event-access/${eventId}`,
+        pin
       );
       if (response.data.success) {
         // If PIN is valid, navigate to the show event data page
@@ -41,7 +41,45 @@ const FullEventForm = () => {
     fetchEventDetails(eventId);
   }, [eventId]);
 
-  return eventData?.fullEventAccess ? (
+  if (!eventData?.fullEventAccess) {
+    return (
+      <div
+        className="private-container"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        <h1
+          style={{
+            fontSize: "1.7rem",
+            fontWeight: "800",
+            marginBottom: "1rem",
+          }}
+        >
+          This Event is Private
+        </h1>
+        <h2
+          style={{
+            fontSize: "1.5rem",
+            marginBottom: "2rem",
+          }}
+        >
+          Cannot Access this Event without Admin's Permission
+        </h2>
+        <h3
+          style={{
+            fontSize: "1.2rem",
+          }}
+        >
+          Thank you
+        </h3>
+      </div>
+    );
+  }
+
+  return (
     <div className="event-access-container">
       <h1
         style={{
@@ -52,7 +90,7 @@ const FullEventForm = () => {
       >
         {eventData?.eventName}
       </h1>
-      <form className="event-form">
+      <form className="event-form" onSubmit={validatePin}>
         <div>
           <p>Please enter PIN to access this event.</p>
           <p>You can access images and videos for this event.</p>
@@ -66,41 +104,11 @@ const FullEventForm = () => {
             onChange={(e) => setPin(e.target.value)}
             className="pin-input"
           />
-          <button onClick={validatePin} className="submit-button">
+          <button type="submit" className="submit-button">
             Submit
           </button>
         </div>
       </form>
-    </div>
-  ) : (
-    <div
-      className="private-container"
-      style={{ display: "flex", alignItems: "center", flexDirection: "column" }}
-    >
-      <h1
-        style={{
-          fontSize: "1.7rem",
-          fontWeight: "800",
-          marginBottom: "1rem",
-        }}
-      >
-        This Event is Private
-      </h1>
-      <h2
-        style={{
-          fontSize: "1.5rem",
-          marginBottom: "2rem",
-        }}
-      >
-        Cannot Access this Event without Admin's Permission
-      </h2>
-      <h3
-        style={{
-          fontSize: "1.2rem",
-        }}
-      >
-        Thank you
-      </h3>
     </div>
   );
 };

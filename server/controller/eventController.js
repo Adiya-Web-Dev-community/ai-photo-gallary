@@ -81,8 +81,8 @@ const addEvent = async (req, res) => {
             ...req.body,
             dashboardId: user.dashboardId,
         });
-        let faceSearchLink = `http://localhost:5173/face-search/event/:${event._id}`;
-        let link = `http://localhost:5173/full-event-access/:${event._id}`;
+        let faceSearchLink = `http://localhost:5173/face-search/event/${event._id}`;
+        let link = `http://localhost:5173/full-event-access/${event._id}`;
         event.link = link;
         event.faceSearchLink = faceSearchLink;
         const qrCode = await QRCode.toDataURL(link);
@@ -542,6 +542,7 @@ const sendEmails = async (req, res) => {
 };
 
 const pinValidate = async (req, res) => {
+    console.log(req.body)
     try {
         console.log(req.params.id)
         const eventId = req.params.id;
@@ -556,11 +557,11 @@ const pinValidate = async (req, res) => {
         }
         if (event.pin === req.body.pin) {
             return res.status(200).json({
+                success: true,
                 message: "Pin validated successfully",
                 data: {
                     eventName: event.eventName,
                     eventId: eventId,
-                    endPoint: `/event/:${event.eventName}/show-all/:${event._id}`
                 },
             });
         } else {
