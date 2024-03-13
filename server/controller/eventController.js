@@ -429,13 +429,16 @@ const getImagesArray = async (req, res) => {
     try {
         const eventId = req.params.id;
         const event = await Event.findById(eventId);
+  try {
+    const eventId = req.params.id;
+    const event = await Event.findById(eventId);
 
         if (!event) {
             return res.status(404).json({ error: "Event not found" });
         }
 
         const page = parseInt(req.query.page) || 1;
-        const pageSize = parseInt(req.query.pageSize) || 8;
+        const pageSize = parseInt(req.query.pageSize) || 12;
 
         const startIndex = (page - 1) * pageSize;
 

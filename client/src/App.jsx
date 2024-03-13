@@ -40,8 +40,11 @@ function App() {
           <Route path="/register-new-user" element={<RegisterUser />} />
           <Route path="/set-password" element={<SetPassword />} />
           {/* full access */}
-          <Route path="/fullaccesseventform" element={<FullEventForm />} />
-          <Route path="/show-event-data" element={<Event />} />
+          <Route
+            path="/full-event-access/:eventId"
+            element={<FullEventForm />}
+          />
+          <Route path="/show-event-data/:eventId" element={<Event />} />
         </Routes>
       </div>
     </Provider>
