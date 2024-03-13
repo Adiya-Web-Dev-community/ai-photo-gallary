@@ -78,10 +78,12 @@ const addEvent = async (req, res) => {
             ...req.body,
             dashboardId: user.dashboardId,
         });
-        let link = `http://localhost:5173/${user.dashboardId.companyName}/event/${event._id}`;
-
+        let faceSearchLink = `http://localhost:5173/${user.dashboardId.companyName}/face-search/event/${event._id}`;
+        let link = `http://localhost:5173/${user.dashboardId.companyName}/event-access/${event._id}`
         event.link = link;
-        const qrCode = await QRCode.toDataURL(link);
+        event.faceSearchLink = faceSearchLink;
+
+        const qrCode = await QRCode.toDataURL(faceSearchLink);
 
         event.qrCode = qrCode;
         await event.save();
@@ -90,7 +92,8 @@ const addEvent = async (req, res) => {
             event.eventHost.name,
             event.name,
             event.qrCode,
-            event.link
+            event.link,
+            event.faceSearchLink
         );
 
         return res.status(200).json({
@@ -506,6 +509,21 @@ async function addWatermarkToImage(imageUrl, watermarkUrl) {
     }
   }
   
+
+  const sendEmails = async (req, res) => {
+    try {
+        const eventId = req.params.id
+        const event = await Event.findById(eventId)
+
+        const emails = event.emailsArray
+
+        
+    } catch (error){
+        emailsArray.forEach((email) => {
+            sendEventMails(email, event.description, event.pin, event.pin);
+          });
+    }
+  }
 
 
 module.exports = {

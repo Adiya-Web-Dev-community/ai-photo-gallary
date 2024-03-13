@@ -45,6 +45,29 @@ const eventSchema = new mongose.Schema({
             type : String
         }
     ],
+    emailsArray : [
+        {
+            email : { 
+                type : String,
+            },
+            emailSent : {
+                type : Boolean,
+                default : false,
+            }
+        
+        }
+    ],
+    whatsappArray : [
+        {
+            number : { 
+                type : String,
+            },
+            messageSent : {
+                type : Boolean,
+                default : false,
+            }
+        }
+    ],
     videoLinks : [
         {
             title : {
@@ -92,10 +115,10 @@ const eventSchema = new mongose.Schema({
             faceData : {
                 type : String   
             },
-            status : {
-                type : String,
-                enum : ["pending", "rejected", "accepted", "delivered"],
-            },
+            // status : {
+            //     type : String,
+            //     enum : ["pending", "rejected", "accepted", "delivered"],
+            // },
             sharedImagesArray : [
                 {
                     type : String
@@ -103,28 +126,7 @@ const eventSchema = new mongose.Schema({
             ]
         }
     ],
-    eventImagesByUsers : [
-        {
-            name : {
-                type : String
-            },
-            email : {
-                type : String
-            }, 
-            phone : {
-                type : String
-            },
-            status : {
-                type : String,
-                enum : ["pending", "rejected", "accepted", "delivered"],
-            },
-            sharedImagesArray : [
-                {
-                    type : String
-                }
-            ]
-        }
-    ],
+
     blockEmails : [
         {
             type : String
@@ -149,9 +151,16 @@ const eventSchema = new mongose.Schema({
         type : String
     },
     pinRequired : {
-        type : Boolean
+        type : Boolean,
+        default : false
     },
-
+    faceSearchPin : {
+        type : String
+    },
+    faceSearchPinRequired : {
+        type : Boolean, 
+        default : false
+    },
 
     // Settings
     faceSearch : {
