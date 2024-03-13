@@ -13,6 +13,8 @@ const {
   processImagesRequest,
   getEventDetails,
   addImageForFaceRec,
+  //
+  fullAccessValidatePin
 } = require("../controller/requestController");
 
 // Save Image Request

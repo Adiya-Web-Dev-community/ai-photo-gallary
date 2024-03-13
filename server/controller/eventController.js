@@ -85,9 +85,9 @@ const addEvent = async (req, res) => {
         let link = `http://localhost:5173/:${user.dashboardId.eventName}/event-access/:${event._id}`;
         event.link = link;
         event.faceSearchLink = faceSearchLink;
-
-        const qrCode = await QRCode.toDataURL(faceSearchLink);
-
+        const qrCode = await QRCode.toDataURL(link);
+        const faceQrCode = await QRCode.toDataURL(faceSearchLink);
+        event.faceQrCode = faceQrCode
         event.qrCode = qrCode;
         await event.save();
         eventConfirmation(
@@ -96,7 +96,8 @@ const addEvent = async (req, res) => {
             event.name,
             event.qrCode,
             event.link,
-            event.faceSearchLink
+            event.faceSearchLink,
+            event.faceQrCode,
         );
 
         return res.status(200).json({

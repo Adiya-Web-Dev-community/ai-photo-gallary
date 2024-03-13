@@ -33,7 +33,12 @@ const eventSchema = new mongose.Schema({
     qrCode :{
         type : String
     },
+    faceQrCode : {
+        type : String
+    },
+    // Access link
 
+    // Full access event 
     link:{
         type : String
     },
@@ -48,17 +53,7 @@ const eventSchema = new mongose.Schema({
     emailsArray : [
         {type : String}
     ],
-    whatsappArray : [
-        {
-            number : { 
-                type : String,
-            },
-            messageSent : {
-                type : Boolean,
-                default : false,
-            }
-        }
-    ],
+
     videoLinks : [
         {
             title : {
@@ -138,27 +133,20 @@ const eventSchema = new mongose.Schema({
         enum : ["published", "unpublished"],
         default : "unpublished"
     },
-    pin :{
+    fullAccessPin :{
         type : String
-    },
-    pinRequired : {
-        type : Boolean,
-        default : false
     },
     faceSearchPin : {
         type : String
     },
-    faceSearchPinRequired : {
-        type : Boolean, 
+    // Settings
+    faceSearchAccess : {
+        type : Boolean,
         default : false
     },
-
-    // Settings
-    faceSearch : {
-        type : Boolean
-    },
     fullEventAccess : {
-        type : Boolean
+        type : Boolean,
+        default : false
     },
     allowUserToPostImages : {
         type : Boolean,
@@ -172,4 +160,4 @@ const eventSchema = new mongose.Schema({
 })
 
 const eventModel = mongose.model('event', eventSchema);
-module.exports = eventModel
+module.exports = eventModel
