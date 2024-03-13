@@ -50,7 +50,22 @@ const requestConfirmationEmail = (email, name, user) => {
 					  `,
   };
 };
+const sendEventMails = (email, eventDescription, pin, eventName, eventLink) => {
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.NODEMAILER_EMAIL,
+      pass: process.env.NODEMAILER_PASSWORD,
+    },
+  });
 
+  let mailOptions = {
+    from: process.env.NODEMAILER_EMAIL,
+    to: email,
+    subject: `Invitation to ${eventName}`,
+    html: `<p>${eventDescription}</p><p>${pin}</p><p><a href="${eventLink}">Event Link</a></p>`,
+  };
+};
 // Requested images link generated
 const requestedEmailImagesLink = (email, link, name, eventName, user) => {
   let transporter = nodemailer.createTransport({
@@ -98,8 +113,7 @@ const eventConfirmation = (email, name, event, qrCode, qrlink) => {
     to: email,
     subject: "Request Confirmation Email",
     html: `
-	<p>Hey ${name},</p>
-	<p>Thank you for choosing us!</p>
+	<p>Images are ready </p>
 	<p>Event ${event},</p>
 	${qrCode}
 	<img src='${qrCode}' alt='QR Code' />
@@ -119,4 +133,5 @@ const eventConfirmation = (email, name, event, qrCode, qrlink) => {
 module.exports = {
   sendOtpMail,
   eventConfirmation,
+  sendEventMails
 };
