@@ -30,20 +30,15 @@ const eventSchema = new mongose.Schema({
             ref : "event"
         }
     ],
-    fullAccess:{
-        accessStatus:{type:Boolean, default :false},
-        qrCode:{type:String},
-        link:{type:string},
-    },
-    faceSearch:{
-        accessStatus:{type:Boolean, default :false},
-        qrCode:{type:String},
-        link:{type:string},
-    },
     qrCode :{
         type : String
     },
+    faceQrCode : {
+        type : String
+    },
+    // Access link
 
+    // Full access event 
     link:{
         type : String
     },
@@ -55,6 +50,10 @@ const eventSchema = new mongose.Schema({
             type : String
         }
     ],
+    emailsArray : [
+        {type : String}
+    ],
+
     videoLinks : [
         {
             title : {
@@ -102,10 +101,10 @@ const eventSchema = new mongose.Schema({
             faceData : {
                 type : String   
             },
-            status : {
-                type : String,
-                enum : ["pending", "rejected", "accepted", "delivered"],
-            },
+            // status : {
+            //     type : String,
+            //     enum : ["pending", "rejected", "accepted", "delivered"],
+            // },
             sharedImagesArray : [
                 {
                     type : String
@@ -113,28 +112,7 @@ const eventSchema = new mongose.Schema({
             ]
         }
     ],
-    eventImagesByUsers : [
-        {
-            name : {
-                type : String
-            },
-            email : {
-                type : String
-            }, 
-            phone : {
-                type : String
-            },
-            status : {
-                type : String,
-                enum : ["pending", "rejected", "accepted", "delivered"],
-            },
-            sharedImagesArray : [
-                {
-                    type : String
-                }
-            ]
-        }
-    ],
+
     blockEmails : [
         {
             type : String
@@ -155,18 +133,20 @@ const eventSchema = new mongose.Schema({
         enum : ["published", "unpublished"],
         default : "unpublished"
     },
-    pin :{
+    fullAccessPin :{
         type : String
     },
-    pinRequired : {
-        type : Boolean
+    faceSearchPin : {
+        type : String
     },
     // Settings
-    faceSearch : {
-        type : Boolean
+    faceSearchAccess : {
+        type : Boolean,
+        default : false
     },
     fullEventAccess : {
-        type : Boolean
+        type : Boolean,
+        default : false
     },
     allowUserToPostImages : {
         type : Boolean,
