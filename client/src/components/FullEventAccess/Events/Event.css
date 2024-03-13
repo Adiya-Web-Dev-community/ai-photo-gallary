@@ -2,9 +2,9 @@
 
 /* Container styles */
 .event-container {
-  max-width: 800px;
+  max-width: 98%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px;
 }
 
 /* Title styles */
