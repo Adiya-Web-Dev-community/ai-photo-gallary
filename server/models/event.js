@@ -172,4 +172,4 @@ const eventSchema = new mongose.Schema({
 })
 
 const eventModel = mongose.model('event', eventSchema);
-module.exports = eventModel
+module.exports = eventModel
