@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './FullEventForm.css';
+import axios from '../../../helpers/axios';
 
 const FullEventForm = () => {
   //   const { eventId } = useParams();
@@ -8,7 +9,7 @@ const FullEventForm = () => {
 
   // //fetch event details
   // const fetchEventDetails = async () => {
-  //   const resp = await axios.get(`http://localhost:3000/events/${eventId}`);
+  //   const resp = await axios.get(`/events/${eventId}`);
   //   //save event details in state => eventData
   //   // check if full access to the event is given
   // };
