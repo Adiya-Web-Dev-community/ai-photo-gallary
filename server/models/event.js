@@ -46,16 +46,7 @@ const eventSchema = new mongose.Schema({
         }
     ],
     emailsArray : [
-        {
-            email : { 
-                type : String,
-            },
-            emailSent : {
-                type : Boolean,
-                default : false,
-            }
-        
-        }
+        {type : String}
     ],
     whatsappArray : [
         {
