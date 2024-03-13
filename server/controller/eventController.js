@@ -523,6 +523,7 @@ async function addWatermarkToImage(imageUrl, watermarkUrl) {
 
 const sendEmails = async (req, res) => {
     try {
+
         const eventId = req.params.id;
         const event = await Event.findById(eventId);
 
@@ -541,8 +542,10 @@ const sendEmails = async (req, res) => {
 
 const pinValidate = async (req, res) => {
     try {
+        console.log(req.params.id)
         const eventId = req.params.id;
-        const event = await Event.findById(id);
+    
+        const event = await Event.findById(eventId);
 
         if (!event) {
             return res.status(404).json({ error: "Event not found" });
@@ -556,13 +559,15 @@ const pinValidate = async (req, res) => {
                 data: {
                     eventName: event.eventName,
                     eventId: eventId,
-                    endPoint : `/event/:${eventName}/show-all/:${event.eventId}`
+                    endPoint : `/event/:${event.eventName}/show-all/:${event._id}`
                 },
             });
         } else {
+          
             return res.status(400).json({ error: "Invalid pin" });
         }
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ error: "Internal Server Error" });
     }
 };
