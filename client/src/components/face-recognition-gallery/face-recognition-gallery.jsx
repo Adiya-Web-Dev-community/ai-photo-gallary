@@ -1,20 +1,54 @@
 import './face-recognition-gallery.css'
 import Switch from '@mui/material/Switch';
-import { useState } from 'react';
+import React, { useState,useEffect } from "react";
 import { MdOutlineArrowBackIosNew } from 'react-icons/md';
 import { FiSettings } from 'react-icons/fi';
 import dummyImg from '../../assets/fr-gallery-dummyimg.jpg'
+import axios from '../../helpers/axios';
+import { useParams } from 'react-router-dom';
+
+
+
+
 
 const FaceRecognitionGallery = () => {
   const [form, setForm] = useState({
-    fullEventAccess: false, faceSearc: false, whatsappAccess: false,
-    clientEmail: false, QRCode: false
+    fullEventAccess: false, faceSearc: false,
+    clientEmail: false,fullAccessQr:'',
+    faceSearchQr:''
   });
 
   const handleChange = (event) => {
     setForm({ ...form, [event.target.name]: event.target.checked });
-    console.log(event.target.name, event.target.checked)
   };
+
+   const {eventName} = useParams()
+   const token = localStorage.getItem('token')
+
+  const getEventDetails = async ()=>{
+    await axios.get(`/event/${eventName}`,
+    {
+        headers: {
+          authorization: token,
+        },
+      }
+    ).then((res)=>{
+      console.log(res.data
+        )
+
+    }).catch((error)=>{
+        console.log(error)
+    })
+
+   }
+
+
+   
+   useEffect(() => {
+    getEventDetails();
+}, [])
+
+
 
   return (
     <div className="fr-gallery-wrapper  ">
