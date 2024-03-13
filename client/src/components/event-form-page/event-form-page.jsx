@@ -5,7 +5,7 @@ import { ImBin } from 'react-icons/im';
 import { useEffect, useState } from 'react';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import dummyImg from '../../assets/fr-gallery-dummyimg.jpg'
-import { Modal, Box, Card, CardMedia, Button } from "@mui/material";
+import { Modal, Box, Card, CardMedia, Button, TextareaAutosize } from "@mui/material";
 import AddVideoLinkModal from './add-video-link-modal/add-video-link-modal';
 import { useSelector } from 'react-redux';
 import axios from '../../helpers/axios'
@@ -224,8 +224,21 @@ console.log(allImages)
                             <Card className='cover-pic-preview-image' style={{
                                 height:'250px',
                                 width:'300px',
-                                border:'1px solid #cccbcb'
+                                border:'1px solid #cccbcb',
+                                display:'flex',
+                                justifyContent:'center',
+                                alignItems:'center'
                             }} >
+                                <p style={{display:'flex',alignItems:'center',
+                                   textAlign:'center'  
+                                  }} >
+                                    <span>Add Cover page<br/>
+                                          1080 * 1080
+                                    </span>
+                                    <span>
+                                    {<CiEdit style={{fontSize:'30px'}}/>}
+                                    </span>
+                                </p>
                                 </Card>
                             {/* <img  src={eventData?.eventCoverPage} /> */}
                             {/* <p onClick={() => setCoverPic("")}>
@@ -243,8 +256,9 @@ console.log(allImages)
                     </div>
                     <hr></hr>
                     <div>
-                        <textarea className='event-form-edit-textarea'
-                            placeholder='Edit Maximum 150 Characters' />
+                        <TextareaAutosize minRows={5} className='event-form-edit-textarea'
+                            placeholder='                                      Edit Maximum                                      
+   150 Characters' />
                     </div>
                     <hr></hr>
 
@@ -257,7 +271,7 @@ console.log(allImages)
                     <div>
                         <div style={{ textAlign: 'center', marginTop: '10px' }}>
                             <button className='rounded-btns'
-                            onClick={()=>navigate(`/facerecognitiongallery/${eventName}/${eventName}/share-with-client`)}
+                            onClick={()=>navigate(`/facerecognitiongallery/${eventId}/${eventName}/share-with-client`)}
                             >
                                 Share with client
                             </button>

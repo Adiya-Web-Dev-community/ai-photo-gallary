@@ -1,25 +1,58 @@
 import './face-recognition-gallery.css'
 import Switch from '@mui/material/Switch';
-import { useState } from 'react';
+import React, { useState,useEffect } from "react";
 import { MdOutlineArrowBackIosNew } from 'react-icons/md';
 import { FiSettings } from 'react-icons/fi';
 import dummyImg from '../../assets/fr-gallery-dummyimg.jpg'
+import axios from '../../helpers/axios';
+import { useParams } from 'react-router-dom';
+
+
+
+
 
 const FaceRecognitionGallery = () => {
   const [form, setForm] = useState({
-    fullEventAccess: false, whatsappAccess: false,
-    aiGalleryAccess: false, anyOneFaceSearchAccess: false,
-    clientEmail: false, QRCode: false
+    fullEventAccess: false, faceSearc: false,
+    clientEmail: false,fullAccessQr:'',
+    faceSearchQr:''
   });
 
   const handleChange = (event) => {
     setForm({ ...form, [event.target.name]: event.target.checked });
-    console.log(event.target.name, event.target.checked)
   };
 
+   const {eventName} = useParams()
+   const token = localStorage.getItem('token')
+
+  const getEventDetails = async ()=>{
+    await axios.get(`/event/${eventName}`,
+    {
+        headers: {
+          authorization: token,
+        },
+      }
+    ).then((res)=>{
+      console.log(res.data
+        )
+
+    }).catch((error)=>{
+        console.log(error)
+    })
+
+   }
+
+
+   
+   useEffect(() => {
+    getEventDetails();
+}, [])
+
+
+
   return (
-    <div className="fr-gallery-wrapper">
-      <section className="fr-gallery-header">
+    <div className="fr-gallery-wrapper  ">
+      <section className="fr-gallery-header ">
         <div className='fr-gallery-header-lb'>
           <button>
             <MdOutlineArrowBackIosNew />
@@ -35,160 +68,112 @@ const FaceRecognitionGallery = () => {
           </button>
         </div>
       </section>
-      <section className='fr-gallery-main'>
+      <section className='fr-gallery-main '>
         <div className='fr-gallery-main-lb'>
           <h6>WHATSAPP / EMAIL PREVIEW</h6>
           <div className='fr-gallery-main-lb-img-container'>
             <img src={dummyImg} alt='userImg' />
           </div>
-          <h4 className='fr-gallery-main-lb-clientname'>AKSHAYANJALI</h4>
-          <div>
+          {/* <h4 className='fr-gallery-main-lb-clientname'>AKSHAYANJALI</h4> */}
+          {/* <div>
             <textarea className='fr-gallery-main-lb-textarea'
               placeholder='Edit Maximum 150 Characters for client email/Qr' />
-          </div>
-          <p className='fr-gallery-main-lb-sharewithclient'>Share with client<br />
+          </div> */}
+          <div className='flex flex-col gap-2 justify-center h-[5rem] pt-4 '>
+            <h4 className='font-bold'>Share with client</h4>
             <span>PIN: 7478</span>
-          </p>
+          </div>
         </div>
         <div className='fr-gallery-main-rb'>
+          <h6 className='text-center text-md'>GENERAL SETTINGS</h6>
           <div className='r1'>
-            <h6>GENERAL ACCESS</h6>
-            <section>
-              <div className='r1-lb'>
-                <section>
+            <div className='flex flex-col gap-4'>
+              <div className='flex justify-between'>
+                <div className='flex justify-between'>
+                  <h6>Full event access</h6>
                   <div>
-                    <p>Full event access</p>
-                    <p>
-                      <Switch
-                        checked={form.fullEventAccess}
-                        onChange={handleChange}
-                        name="fullEventAccess"
-                        color="primary"
-                      />
-                    </p>
+                    <Switch
+                      checked={form.fullEventAccess}
+                      onChange={handleChange}
+                      name="fullEventAccess"
+                      color="primary"
+                    />
                   </div>
-                  <p>Anyone on the internet with the pin can view download</p>
-                  <div>
-                    <p>Whatsapp access</p>
-                      <p>
-                        <Switch
-                          checked={form.whatsappAccess}
-                          onChange={handleChange}
-                          name="whatsappAccess"
-                          inputProps={{ 'aria-label': 'secondary checkbox' }}
-                          color="primary"
-                        />
-                      </p>
-                    
-                  </div>
-                </section>
-              </div>
-              <div className='r1-rb'>
-                <section>
-                  <div>
-                    <p>
-                      <div>
-                        Ai gallery access
-                      </div>
-                      <div>
-                        <Switch
-                          checked={form.aiGalleryAccess}
-                          onChange={handleChange}
-                          name="aiGalleryAccess"
-                          color="primary"
-                        />
-                      </div>
-                    </p>
-                    <p>Only people with access can download Ai gallery</p>
-                  </div>
-                  <div>
-                    <p>
-                      <div>
-                        Anyone Face search access
-                      </div>
-                      <div>
-                        <Switch
-                          checked={form.anyOneFaceSearchAccess}
-                          onChange={handleChange}
-                          name="anyOneFaceSearchAccess"
-                          color="primary"
-                        />
-                      </div>
-                    </p>
-                  </div>
-                </section>
-              </div>
-            </section>
-          </div>
-          <div className='r2'>
-            <h6>CHOOSE TO SHARE</h6>
-            <section>
-              <div>
-                <div>
-                  Client email
                 </div>
-                <div>
-                  <Switch
-                    checked={form.clientEmail}
-                    onChange={handleChange}
-                    name="clientEmail"
-                    color="primary"
-                  />
+                <div className='flex justify-between'>
+                  <h6>Face Search</h6>
+                  <div>
+                    <Switch
+                      checked={form.fullEventAccess}
+                      onChange={handleChange}
+                      name="fullEventAccess"
+                      color="primary"
+                    />
+                  </div>
                 </div>
               </div>
-              <div>
-                <div>
-                  Direct link/QR code
+              <div className='flex justify-between'>
+                <div className='flex justify-between'>
+                  <h6>Client email</h6>
+                  <div>
+                    <Switch
+                      checked={form.fullEventAccess}
+                      onChange={handleChange}
+                      name="fullEventAccess"
+                      color="primary"
+                    />
+                  </div>
                 </div>
-                <div className='qr-block'>
-                  <img src="" alt="" className='qr-img' />
-                  <p>
-                    <button id='fc-gallery-qr-code-download-btn'>
-                      Download
-                    </button>
-                  </p>
-                </div>
-                <div>
-                  <Switch
-                    checked={form.QRCode}
-                    onChange={handleChange}
-                    name="QRCode"
-                    color="primary"
-                  />
+                <div className='flex justify-between '>
+                  <h6>client whats app</h6>
+                  <div>
+                    <Switch
+                      checked={form.fullEventAccess}
+                      onChange={handleChange}
+                      name="fullEventAccess"
+                      color="primary"
+                    />
+                  </div>
                 </div>
               </div>
-            </section>
-          </div>
-          <div className='r3'>
-            <h6>INVITE PEOPLE</h6>
-            <div>
-              <section>
-                <div>
-                  Share with client
-                </div>
-                <div>
-                  <textarea />
-                </div>
-                <p>copy link</p>
-              </section>
-              <section>
-                <div>
-                  Whatsapp Number
-                </div>
-                <div>
-                  <textarea />
-                </div>
-              </section>
             </div>
           </div>
+
+          <div className='py-6 '>
+            <h6 className='text-center text-md'>CHOOSE SAHRING OPTIONS</h6>
+            <div className='flex justify-center gap-[10rem] py-[2rem]'>
+              <div>
+                <img src={'https://th.bing.com/th?id=OIP.CKXBqkgG-DU3EG864iMU2AHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2'} className='w-[7rem] h-[7rem]' />
+                <h6 className='text-center'>Full access</h6>
+                <p className='py-2 text-xs font-bold text-center underline underline-offset-4'>COPY LINK</p>
+              </div>
+              <div>
+                <img src={'https://th.bing.com/th?id=OIP.CKXBqkgG-DU3EG864iMU2AHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2'} className='w-[7rem] h-[7rem]' />
+                <h6 className='text-center'>Face Seacrh</h6>
+                <p className='py-2 text-xs font-bold text-center underline underline-offset-4'>COPY LINK</p>
+              </div>
+            </div>
+          </div>
+
+          {/* share with clients */}
+          <div className='flex justify-between'>
+            <div>
+              <h5>share with clients</h5>
+              <div className=' space-x-5'>
+                <input type='email' placeholder='Client Email' className='border-[1px] border-gray-400 rounded-md px-1 py-1.5' />
+                <button className='bg-gray-200 rounded-md w-[2rem] h-[2rem] tetxt-xl font-bold text-center'>+</button>
+              </div>
+            </div>
+          </div>
+
           <div id='face-gallery-form-save-btn'>
             <button>
               Save
             </button>
           </div>
         </div>
-      </section>
-    </div>
+      </section >
+    </div >
 
   )
 }
