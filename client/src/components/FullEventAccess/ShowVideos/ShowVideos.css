@@ -1,0 +1,40 @@
+
+.show-videos-container {
+  margin-top: 20px;
+}
+
+.show-videos-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.video-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.video-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); 
+  padding: 15px;
+  border-radius: 1rem;
+  transition: box-shadow 0.3s ease; 
+}
+
+.video-item:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
+}
+
+
+.video-link {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.video-link:hover {
+  color: #007bff; 
+}

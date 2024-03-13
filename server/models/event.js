@@ -30,6 +30,16 @@ const eventSchema = new mongose.Schema({
             ref : "event"
         }
     ],
+    fullAccess:{
+        accessStatus:{type:Boolean, default :false},
+        qrCode:{type:String},
+        link:{type:String},
+    },
+    faceSearch:{
+        accessStatus:{type:Boolean, default :false},
+        qrCode:{type:String},
+        link:{type:String},
+    },
     qrCode :{
         type : String
     },
@@ -161,7 +171,6 @@ const eventSchema = new mongose.Schema({
         type : Boolean, 
         default : false
     },
-
     // Settings
     faceSearch : {
         type : Boolean

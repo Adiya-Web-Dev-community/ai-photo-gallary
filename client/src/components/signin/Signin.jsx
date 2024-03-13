@@ -4,13 +4,13 @@ import { Button, Box, TextField } from '@mui/material'
 import { Icon } from 'react-icons-kit'
 import { cross } from 'react-icons-kit/icomoon/cross'
 import { useNavigate } from 'react-router-dom';
-import firebaseApp from './firebase_config'
+// import firebaseApp from './firebase_config'
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { toast } from "react-hot-toast";
 import axios from '../../helpers/axios'
 import CircularProgress from '@mui/material/CircularProgress';
 
-const auth = getAuth(firebaseApp);
+// const auth = getAuth(firebaseApp);
 const Signin = () => {
     const navigate = useNavigate()
 
