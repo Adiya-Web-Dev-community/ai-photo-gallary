@@ -1,0 +1,116 @@
+.plan-title {
+  text-align: center;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  gap: 4rem;
+}
+
+.plans-container {
+  margin-top: 8rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.plan-card {
+  display: flex;
+  flex-direction: column;
+  width: 20rem;
+  height: 34.375rem;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  justify-content: space-between;
+  border-radius: 1rem;
+}
+
+.plan-card-content {
+  padding: 1.5rem;
+  background-color: #ffffff;
+}
+
+.plan-name {
+  display: flex;
+  justify-content: center;
+}
+
+.plan-price {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #000;
+}
+
+.plan-price-prefix {
+  margin-left: 0.5rem;
+  margin-right: 1rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.6;
+  color: #000;
+}
+
+.plan-price-suffix {
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.6;
+  color: #000;
+}
+
+.plan-feature {
+  margin-top: 1rem;
+}
+
+.plan-feature-item {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 0.5rem;
+}
+
+.plan-feature-icon {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #10b981;
+}
+
+.plan-feature-text {
+  margin-left: 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #000;
+}
+
+.select-plan-btn {
+  margin-top: auto;
+  margin-inline: auto;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #ffffff;
+  background-color: #1f282f;
+  border-radius: 1rem;
+  transition: background-color 0.3s ease;
+}
+.plan-btn {
+  margin-bottom: 1.5rem;
+}
+
+.select-plan-btn:hover {
+  background-color: #121518;
+}

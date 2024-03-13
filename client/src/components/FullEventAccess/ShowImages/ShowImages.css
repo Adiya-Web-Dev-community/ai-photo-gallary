@@ -12,8 +12,9 @@
 }
 
 .modal-content {
-  background-color: white;
   display: flex;
+  width: 1050px;
+  height: auto;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
@@ -23,6 +24,7 @@
   top: 10px;
   right: 10px;
   font-size: 24px;
+  color: #fff;
   cursor: pointer;
 }
 
@@ -38,4 +40,7 @@ body.modal-open {
   width: 250px;
   height: 250px;
   background-size: cover;
+}
+.image-container {
+  display: flex;
 }

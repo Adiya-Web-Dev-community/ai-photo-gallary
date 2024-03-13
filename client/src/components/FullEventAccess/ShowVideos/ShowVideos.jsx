@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { FaExternalLinkAlt } from 'react-icons/fa';
-import './ShowVideos.css';
+import React, { useState } from "react";
+import { FaExternalLinkAlt } from "react-icons/fa";
+import "./ShowVideos.css";
 
 const ShowVideos = () => {
   const [videoLinks, setVideoLinks] = useState([
-    'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-    'https://www.youtube.com/watch?v=xC7e2bo6SQ0',
-    'https://www.youtube.com/watch?v=7T2oje4cYxw',
-    'https://www.youtube.com/watch?v=Q5im0Ssyyus',
+    "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "https://www.youtube.com/watch?v=xC7e2bo6SQ0",
+    "https://www.youtube.com/watch?v=7T2oje4cYxw",
+    "https://www.youtube.com/watch?v=Q5im0Ssyyus",
   ]);
 
   return (
     <div className="show-videos-container">
-      <h3 className="show-videos-header">Videos</h3>
+      {/* <h3 className="show-videos-header">Videos</h3> */}
       <ul className="video-list">
         {videoLinks.map((videoLink, index) => (
           <a
