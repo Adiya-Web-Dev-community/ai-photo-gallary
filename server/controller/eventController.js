@@ -429,9 +429,6 @@ const getImagesArray = async (req, res) => {
     try {
         const eventId = req.params.id;
         const event = await Event.findById(eventId);
-  try {
-    const eventId = req.params.id;
-    const event = await Event.findById(eventId);
 
         if (!event) {
             return res.status(404).json({ error: "Event not found" });
