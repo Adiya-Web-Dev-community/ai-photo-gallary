@@ -210,13 +210,22 @@
 }
 
 .rounded-btns {
-    padding: 0px 15px 5px 15px;
+    padding: 7px 15px 7px 15px;
     height: 35px;
     font-weight: 500;
-    border: 3px inset #ffff;
+    /* border: 3px inset #ffff; */
     border-radius: 20px;
-    background-color: #f0f0f0;
+    background-color: rgb(244, 243, 243);
     cursor: pointer;
+    border:none ;
+    box-shadow:0px 2px 0px 0px inset rgb(201, 200, 200),
+    0px 5px 0px 0px inset rgb(255, 255, 255),
+    0px -5px 0px 0px inset rgb(255, 255, 255),
+    0px 0px 0px 1px  rgb(201, 200, 200)
+
+
+    /* 0px 0px 5px 5px  rgb(199, 199, 199) */
+    ;
 }
 
 .delete-event-btn-wrapper {

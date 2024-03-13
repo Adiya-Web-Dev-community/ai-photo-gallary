@@ -34,12 +34,11 @@ function App() {
           <Route path="/gallary/:id" element={<Gallary />} />
           <Route path="/watermaker-setup" element={<SetupWatermark />} />
           <Route
-            path="/facerecognitiongallery"
+            path="/facerecognitiongallery/:eventName/:eventId/share-with-client"
             element={<FaceRecognitionGallery />}
           />
           <Route path="/register-new-user" element={<RegisterUser />} />
           <Route path="/set-password" element={<SetPassword />} />
-          {/* //full access */}
           <Route path="/fullaccesseventform" element={<FullEventForm />} />
           <Route path="/show-event-data" element={<Event />} />
         </Routes>
