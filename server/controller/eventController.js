@@ -81,8 +81,8 @@ const addEvent = async (req, res) => {
             ...req.body,
             dashboardId: user.dashboardId,
         });
-        let faceSearchLink = `http://localhost:5173/:${user.dashboardId.eventName}/face-search/event/:${event._id}`;
-        let link = `http://localhost:5173/:${user.dashboardId.eventName}/event-access/:${event._id}`;
+        let faceSearchLink = `http://localhost:5173/face-search/event/:${event._id}`;
+        let link = `http://localhost:5173/full-event-access/:${event._id}`;
         event.link = link;
         event.faceSearchLink = faceSearchLink;
         const qrCode = await QRCode.toDataURL(link);

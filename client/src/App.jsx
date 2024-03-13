@@ -24,7 +24,6 @@ function App() {
       <AppNavbar />
       <div style={{ marginTop: "5rem" }}>
         <Routes>
-          <Route path="/" element={<Signin />} />
           <Route path="/dashboard-details" element={<DashBoardDetails />} />
           <Route path="/home-page" element={<HomePage />} />
           <Route
