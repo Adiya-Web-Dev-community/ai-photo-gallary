@@ -425,6 +425,7 @@ const deleteImages = async (req, res) => {
 };
 
 const getImagesArray = async (req, res) => {
+    console.log("query", req.query)
     try {
         const eventId = req.params.id;
         const event = await Event.findById(eventId);
@@ -434,7 +435,7 @@ const getImagesArray = async (req, res) => {
         }
 
         const page = parseInt(req.query.page) || 1;
-        const pageSize = parseInt(req.query.pageSize) || 9;
+        const pageSize = parseInt(req.query.pageSize) || 8;
 
         const startIndex = (page - 1) * pageSize;
 
@@ -544,13 +545,13 @@ const pinValidate = async (req, res) => {
     try {
         console.log(req.params.id)
         const eventId = req.params.id;
-    
+
         const event = await Event.findById(eventId);
 
         if (!event) {
             return res.status(404).json({ error: "Event not found" });
         }
-        if(event.fullEventAccess===false){
+        if (event.fullEventAccess === false) {
             return res.status(400).json({ error: "Event is not published" });
         }
         if (event.pin === req.body.pin) {
@@ -559,11 +560,11 @@ const pinValidate = async (req, res) => {
                 data: {
                     eventName: event.eventName,
                     eventId: eventId,
-                    endPoint : `/event/:${event.eventName}/show-all/:${event._id}`
+                    endPoint: `/event/:${event.eventName}/show-all/:${event._id}`
                 },
             });
         } else {
-          
+
             return res.status(400).json({ error: "Invalid pin" });
         }
     } catch (error) {

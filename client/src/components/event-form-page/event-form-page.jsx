@@ -27,6 +27,7 @@ const EventFormPage = () => {
     data: {},
   });
   const [selectedImage, setSelectedImage] = useState("");
+  const [paginationData, setPaginationData] = useState({});
 
   const [allImages, setAllImages] = useState([]);
   const navigate = useNavigate();
@@ -39,8 +40,7 @@ const EventFormPage = () => {
         },
       })
       .then((res) => {
-        console.log("getEventdetails => ", res.data);
-        setEventData(res.data.data);
+        // console.log("getEventdetails => ", res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -54,7 +54,7 @@ const EventFormPage = () => {
     axios
       .patch(`/update-event-publish/${eventId}`)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data.success) {
           toast.success("event updated to published");
           getEventDetails();
@@ -64,21 +64,28 @@ const EventFormPage = () => {
         console.log(err);
       });
   };
+  const [pageNo, setPageNo] = useState(paginationData?.currentPage || 1);
 
   const getAllThePostImage = async (url) => {
     await axios
-      .get(`/event/${eventId}/event-images`, {
+      .get(`/event/${eventId}/event-images?page=${pageNo}`, {
         headers: {
           authorization: token,
         },
       })
       .then((res) => {
         setAllImages(res.data.imagesArray);
+        // console.log("all event images", res.data);
+        setPaginationData(res.data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+  //when page no changes fetch images
+  useEffect(() => {
+    getAllThePostImage();
+  }, [pageNo]);
 
   const style = {
     position: "absolute",
@@ -100,7 +107,7 @@ const EventFormPage = () => {
     setOpenImagesCorousalModal(false);
 
   const [videoLinkArr, setVideoLinkArr] = useState([]);
-  console.log(videoLinkArr);
+  // console.log(videoLinkArr);
   const [openVideoLinkModal, setOpenVideoLinkModal] = useState(false);
   const handleOpenVideoLinkModal = () => setOpenVideoLinkModal(true);
   const handleCloseVideoLinkModal = () => setOpenVideoLinkModal(false);
@@ -108,7 +115,7 @@ const EventFormPage = () => {
   const [imgArr, setImgArr] = useState([]);
   const [imgLinkArr, setImgLinkArr] = useState([]);
   // console.log(imgArr)
-  console.log(imgLinkArr);
+  // console.log(imgLinkArr);
   const [openAddImagesModal, setOpenAddImagesModal] = useState(false);
   const handleOpenAddImagesModal = () => setOpenAddImagesModal(true);
   const handleCloseAddImagesModal = () => setOpenAddImagesModal(false);
@@ -122,7 +129,7 @@ const EventFormPage = () => {
       ...eventData,
       eventCoverPage: URL.createObjectURL(e.target.files[0]),
     });
-    console.log(URL.createObjectURL(e.target.files[0]));
+    // console.log(URL.createObjectURL(e.target.files[0]));
   };
 
   useEffect(() => {
@@ -130,7 +137,6 @@ const EventFormPage = () => {
     getAllThePostImage();
   }, []);
 
-  console.log(allImages);
   return (
     <div className="event-form-page-wrapper">
       <section className="event-form-page-header">
@@ -149,9 +155,10 @@ const EventFormPage = () => {
       </section>
       <main className="event-form-main-container">
         <section className="lb">
-          <div className="event-form-page-main-button-container">
+          <div className="flex gap-3 px-10 py-2 pb-4">
             <section>
               <button
+                className="px-4 py-0.5 rounded-md font-bold "
                 style={{
                   backgroundColor:
                     containerRendering == "allImages"
@@ -174,6 +181,7 @@ const EventFormPage = () => {
             <section>
               <button
                 onClick={() => setContainerRendering("videos")}
+                className="px-4 py-0.5 rounded-md font-bold "
                 style={{
                   backgroundColor:
                     containerRendering == "videos" ? "#f0f0f0" : "transparent",
@@ -183,7 +191,7 @@ const EventFormPage = () => {
               </button>
             </section>
           </div>
-          <div className="event-form-page-main-data-container">
+          <div className="w-[90%] m-auto">
             {/* {!data ?
                             <div className='dummy-text'>
                                 <p><AiOutlineCloudUpload className='cloud-upload-icon' /></p>
@@ -209,6 +217,9 @@ const EventFormPage = () => {
                 eventData={allImages}
                 setSelectedImage={setSelectedImage}
                 setOpenImagesCorousalModal={setOpenImagesCorousalModal}
+                getAllThePostImage={getAllThePostImage}
+                paginationData={paginationData}
+                setPageNo={setPageNo}
               />
             </section>
             <section
