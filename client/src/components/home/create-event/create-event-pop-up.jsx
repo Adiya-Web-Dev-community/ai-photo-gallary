@@ -5,6 +5,9 @@ import { useEffect, useState } from 'react';
 import axios from '../../../helpers/axios'
 import { toast } from "react-hot-toast";
 import { useDispatch } from 'react-redux';
+import TextField from '@mui/material/TextField';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import { getCreateEventData } from '../../../store/reducer';
 
 
@@ -79,23 +82,43 @@ const CreateEventPopup = ({ handleClose, getAllEvents }) => {
                 <h4>Create Event</h4>
                 <h4 onClick={handleClose}><RxCross1 /></h4>
             </div>
-            <div className='create-event-pop-up-main'>
-                <section>
-                    <label>Event Name</label>
-                    <input type="text" name='eventName' onChange={handleCreateEventForm} />
-                </section>
-                <section>
-                    <label>Create Date</label>
-                    <input type="date" name='eventDate' onChange={handleCreateEventForm} />
-                </section>
-                <section>
+            <div>
+                    <TextField size='small' fullWidth value={createEventForm.eventName} label={'Event Name'} type="text" name='eventName' onChange={handleCreateEventForm} />
+             
+                    <TextField sx={{
+                        margin:'10px 0px'
+                    }} size='small' fullWidth type="date" name='eventDate' onChange={handleCreateEventForm} />
+
+<FormControlLabel
+        control={
+          <Checkbox
+          
+            color="primary" // Change color if needed
+          />
+          
+        }
+        label="Full Access"
+      /><br/>
+      
+<FormControlLabel
+        control={
+          <Checkbox
+          
+            color="primary" // Change color if needed
+          />
+          
+        }
+        label="Face Search"
+      />
+                {/* <section>
+                
                     <label>Full Access</label>
-                    <input type="checkbox"  />
+                    <TextField type="checkbox"  />
                 </section>
                 <section>
                     <label>Face Search</label>
-                    <input type="checkbox"  />
-                </section>
+                    <TextField type="checkbox"  />
+                </section> */}
             </div>
             <div className='create-event-pop-up-save-btn-container'>
                 {/* <button onClick={() => navigate('/event-form-page')}> */}
