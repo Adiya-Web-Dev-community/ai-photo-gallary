@@ -7,16 +7,17 @@ const ImagesCorousal = ({imgUrl,handleCloseImagesCorousalModal}) => {
     const {eventId,eventName} = useParams()
     const token = localStorage.getItem('token')
 
+    console.log(token)
 
     const handaleDeleteImage= async ()=>{
-        await axios.post(`/event/${eventId}/event-images`,{
+        await axios.delete(`/event/${eventId}/event-images`,{
             imagesArray:[imgUrl]
         },
         {
             headers: {
-              authorization: token,
-            },
-          }
+                authorization: token
+            }
+        }
         ).then((res)=>{
          return res
         }).catch((error)=>{
