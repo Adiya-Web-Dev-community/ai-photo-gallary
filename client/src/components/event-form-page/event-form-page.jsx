@@ -5,7 +5,7 @@ import { ImBin } from 'react-icons/im';
 import { useEffect, useState } from 'react';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import dummyImg from '../../assets/fr-gallery-dummyimg.jpg'
-import { Modal, Box, Card } from "@mui/material";
+import { Modal, Box, Card, CardMedia, Button } from "@mui/material";
 import AddVideoLinkModal from './add-video-link-modal/add-video-link-modal';
 import { useSelector } from 'react-redux';
 import axios from '../../helpers/axios'
@@ -216,28 +216,44 @@ console.log(allImages)
                         </section>
                     </div>
                 </section>
-                <Card sx={{border:'1px solid rgba(155, 255, 255);',margin:'10px'}}>
-                    <Card>
-                        <div >
-                            {/* <img className='cover-pic-preview-image' src={URL.createObjectURL(coverPic)} /> */}
-                            <img  src={eventData?.eventCoverPage} />
-                            <p onClick={() => setCoverPic("")}>
+                <div style={{border:'1px solid #cccbcb',margin:'10px',width:'440px'}}>
+                    <div>
+                        <CardMedia sx={{display:'flex',alignItems:'center',flexDirection:'column',
+                         padding:'10px'
+                        }} >
+                            <Card className='cover-pic-preview-image' style={{
+                                height:'250px',
+                                width:'300px',
+                                border:'1px solid #cccbcb'
+                            }} >
+                                </Card>
+                            {/* <img  src={eventData?.eventCoverPage} /> */}
+                            {/* <p onClick={() => setCoverPic("")}>
                                 <input id='cover-pic-input' type='file' onChange={editCoverPage} />
                                 <label htmlFor='cover-pic-input'>change cover page 1080 × 1080</label>
-                            </p>
-                        </div>
-                        <button >
+                            </p> */}
+                              {/* <Button 
+                              variant='contained'
+                              sx={{
+                            margin:'0px auto'
+                        }} >
                             change cover page
-                        </button>
-                    </Card>
+                        </Button> */}
+                        </CardMedia>
+                    </div>
+                    <hr></hr>
                     <div>
                         <textarea className='event-form-edit-textarea'
                             placeholder='Edit Maximum 150 Characters' />
                     </div>
-                    <div>
+                    <hr></hr>
+
+                    <div style={{background:'white',width:'300px',padding:'10px', marginBottom:'-50px'}}>
                         <p>Event Code: <span>42485</span></p>
-                        <p>copy</p>
+                        {/* <p>copy</p> */}
                     </div>
+                    <hr></hr>
+
                     <div>
                         <div style={{ textAlign: 'center', marginTop: '10px' }}>
                             <button className='rounded-btns'
@@ -260,7 +276,7 @@ console.log(allImages)
                             </button>
                         </div>
                     </div>
-                </Card>
+                </div>
             </main>
 
             {/* Add Image Modal */}
