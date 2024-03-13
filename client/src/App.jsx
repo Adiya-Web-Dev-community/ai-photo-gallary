@@ -24,6 +24,7 @@ function App() {
       <AppNavbar />
       <div style={{ marginTop: "5rem" }}>
         <Routes>
+          <Route path="/" element={<Signin />} />
           <Route path="/dashboard-details" element={<DashBoardDetails />} />
           <Route path="/home-page" element={<HomePage />} />
           <Route
@@ -33,13 +34,17 @@ function App() {
           <Route path="/gallary/:id" element={<Gallary />} />
           <Route path="/watermaker-setup" element={<SetupWatermark />} />
           <Route
-            path="/facerecognitiongallery/:eventName/:eventId/share-with-client"
+            path="/facerecognitiongallery"
             element={<FaceRecognitionGallery />}
           />
           <Route path="/register-new-user" element={<RegisterUser />} />
           <Route path="/set-password" element={<SetPassword />} />
-          <Route path="/fullaccesseventform" element={<FullEventForm />} />
-          <Route path="/show-event-data" element={<Event />} />
+          {/* full access */}
+          <Route
+            path="/full-event-access/:eventId"
+            element={<FullEventForm />}
+          />
+          <Route path="/show-event-data/:eventId" element={<Event />} />
         </Routes>
       </div>
     </Provider>
