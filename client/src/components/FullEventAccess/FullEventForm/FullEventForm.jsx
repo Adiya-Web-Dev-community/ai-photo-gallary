@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import './FullEventForm.css';
 import axios from '../../../helpers/axios';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const FullEventForm = () => {
   //   const { eventId } = useParams();
   const [eventData, setEventData] = useState({ fullAccess: false });
   const [pin, setPin] = useState('');
-
+  const navigate  = useNavigate() 
+  const {eventId} = useParams()
   // //fetch event details
   // const fetchEventDetails = async () => {
   //   const resp = await axios.get(`/events/${eventId}`);
@@ -15,7 +17,9 @@ const FullEventForm = () => {
   // };
 
   //handle PIN check
-  const checkPinValidation = () => {};
+  const checkPinValidation = () => {
+    navigate(`/show-event-data/${eventId}`)
+  };
 
   return eventData?.fullAccess ? (
     <div className="pirvate-container">

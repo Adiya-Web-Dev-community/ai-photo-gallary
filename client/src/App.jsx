@@ -24,7 +24,6 @@ function App() {
       <AppNavbar />
       <div style={{ marginTop: "5rem" }}>
         <Routes>
-          <Route path="/" element={<Signin />} />
           <Route path="/dashboard-details" element={<DashBoardDetails />} />
           <Route path="/home-page" element={<HomePage />} />
           <Route
@@ -39,7 +38,7 @@ function App() {
           />
           <Route path="/register-new-user" element={<RegisterUser />} />
           <Route path="/set-password" element={<SetPassword />} />
-          {/* //full access */}
+          {/* full access */}
           <Route path="/fullaccesseventform" element={<FullEventForm />} />
           <Route path="/show-event-data" element={<Event />} />
         </Routes>

@@ -53,7 +53,6 @@ const eventSchema = new mongose.Schema({
     emailsArray : [
         {type : String}
     ],
-
     videoLinks : [
         {
             title : {
@@ -138,6 +137,10 @@ const eventSchema = new mongose.Schema({
     },
     faceSearchPin : {
         type : String
+    },
+    faceSearchPinRequired : {
+        type : Boolean, 
+        default : false
     },
     // Settings
     faceSearchAccess : {
