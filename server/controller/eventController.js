@@ -1,6 +1,7 @@
 const DashBoard = require("../models/dashboard");
 const Event = require("../models/event");
 const User = require("../models/user");
+const generateOTP = require("../helpers/otpHelper.js").generateOTP;
 const {
     eventConfirmation,
     sendEventMails,
@@ -89,6 +90,11 @@ const addEvent = async (req, res) => {
         const faceQrCode = await QRCode.toDataURL(faceSearchLink);
         event.faceQrCode = faceQrCode
         event.qrCode = qrCode;
+
+        event.fullAccessPin = generateOTP()
+        event.faceSearchPin = generateOTP()
+
+
         await event.save();
         eventConfirmation(
             event.eventHost.email,
