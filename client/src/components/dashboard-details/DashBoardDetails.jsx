@@ -4,11 +4,16 @@ import { Box, Button, Input, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "../../helpers/axios";
 import { toast } from "react-hot-toast";
+import { CiEdit } from "react-icons/ci";
+import { MdDelete } from "react-icons/md";
+import { GrView } from "react-icons/gr";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 const DashBoardDetails = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const [companyDetails, setCompanyDetails] = useState();
+  const [isEdit,setIsEdit] = useState(false)
   
   const dummyArray = [
     {
@@ -105,7 +110,8 @@ const DashBoardDetails = () => {
           },
         });
         if (response.data.success) {
-          setDashboardData({...response.data.data[0],          socialLink:dummyArray
+          setDashboardData({...response.data.data[0],   
+                   socialLink:dummyArray
           });
         } 
       }catch(error){
@@ -129,6 +135,7 @@ const DashBoardDetails = () => {
 
   const handleChange = (id, field, value) => {
     setDashboardData(prev=>({
+  
       ...prev,socialLink:prev.socialLink.map(link => {
         if (link.id === id) {
           return { ...link, [field]: value };
@@ -140,10 +147,22 @@ const DashBoardDetails = () => {
 
   const handleAddLink = () => {
     const newId = dashboardData.socialLink.length + 1;
+    if(newId>5){
+        return 
+    }
     setDashboardData(prev=>({...prev,
      socialLink:[...prev.socialLink, { id: newId, ...{ linkType: '', link: '' } }]
   }));
   };
+
+  const deleteLink = (id) => {
+    setDashboardData(prev => ({
+      ...prev,
+      socialLink: prev.socialLink.filter(link => link.id !== id)
+    }));
+  };
+  
+  
 
   return (
     <div className="dashboard-details-wrappper">
@@ -215,16 +234,19 @@ const DashBoardDetails = () => {
           {/* <label style={{margin:'10px'}}>Social Link</label> */}
 
        
-         {/* <Box sx={{display:'grid',padding:'10px ',border:'1px solid',borderRadius:'5px',justifyContent:'start',
-        gridTemplateColumns:`repeat(${6},1fr)`
+         <Box sx={{display:'flex',padding:'10px ',border:'1px solid',borderRadius:'5px',justifyContent:'start',
+        position:'relative',marginTop:'40px'
         }}>
-          {dummyArray.map((el)=>
-            <Button style={{padding:'10px'}}>
+          {isEdit?dashboardData.socialLink.map((el)=>
+            <a target="blank" style={{padding:'10px'}} href={el.link} style={{
+              margin:'0px 10px',
+              textDecoration:'none'
+            }}>
+                           <FaExternalLinkAlt/>
              {el.linkType}
-            </Button>
-          )}
-             {dashboardData.socialLink.map((el) =>
-        <div key={el.id} style={{ padding: '10px'}}>
+            </a>
+          ):dashboardData.socialLink.map((el) =>
+        <div key={el.id} style={{ padding: '10px',width:'200px'}}>
           <TextField
             value={el.linkType}
             onChange={(e) => handleChange(el.id, 'linkType', e.target.value)}
@@ -238,9 +260,32 @@ const DashBoardDetails = () => {
             name='link'
             sx={{ margin: '15px 0px 0px 0px' }}
           />
+          <Button         variant="outlined" style={{ color: 'red',marginTop:'15px' }}  onClick={()=>deleteLink(el.id)}>
+            {<MdDelete/>}
+          </Button>
         </div>
       )}
-        </Box> */}
+       <div  style={{ 
+       padding: '10px',
+       display:'flex',
+       justifyContent:'center',
+       alignItems:'center',
+       
+       }} >
+          {dashboardData.socialLink.length<5&&!isEdit&&<Button onClick={()=>{handleAddLink()}}>Add New Link</Button>}
+        
+        </div>
+        <Button  onClick={()=>{setIsEdit(prev=>!prev)}} sx={{position:'absolute',top:'-30px',right:'0px',
+        height:'fit-content',
+        width:'fit-content',
+        color:'blue'
+        }}
+        variant="outlined"
+        >
+
+          {isEdit?<CiEdit/>:<GrView/>}
+        </Button> 
+        </Box>
 
         <Box className="savebtn-wrapper">
           <Button

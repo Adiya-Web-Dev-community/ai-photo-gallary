@@ -3,6 +3,8 @@ const Event = require("../models/event");
 const User = require("../models/user");
 const { eventConfirmation } = require("../helpers/emailHelper.js");
 const QRCode = require("qrcode");
+const Jimp = require("jimp");
+const axios = require("axios");
 
 // Get all events
 const getEvents = async (req, res) => {
@@ -240,6 +242,272 @@ const deleteSubEvent = async (req, res) => {
     }
 };
 
+const addYoutubeLinks = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        const { videoLinks } = req.body;
+
+        if (
+            !Array.isArray(videoLinks) ||
+            videoLinks.some((video) => !video.title || !video.link)
+        ) {
+            return res.status(400).json({ message: "Invalid videoLinks data" });
+        }
+
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+        event.videoLinks = [...event.videoLinks, ...videoLinks];
+
+        await event.save();
+        return res
+            .status(200)
+            .json({ message: "YouTube links added successfully", data: event });
+    } catch (error) {
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+const deleteYoutubeLinks = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        const linkId = req.params.linkId;
+
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        event.videoLinks = event.videoLinks.filter(
+            (video) => video._id.toString() !== linkId
+        );
+
+        await event.save();
+
+        return res.status(200).json({
+            message: "YouTube link deleted successfully",
+            data: event,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+const getYoutubeLinks = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        console.log(eventId);
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        return res.status(200).json({ data: event.videoLinks });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+const updateYoutubeLinks = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        const linkId = req.params.linkId;
+        const updatedFields = req.body;
+        console.log("Received updatedFields:", updatedFields);
+
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        const linkIndex = event.videoLinks.findIndex(
+            (link) => link._id.toString() === linkId
+        );
+
+        if (linkIndex === -1) {
+            return res.status(404).json({ message: "YouTube link not found" });
+        }
+
+        const updatedLink = {
+            ...event.videoLinks[linkIndex],
+            ...updatedFields,
+        };
+        event.videoLinks[linkIndex] = updatedLink;
+
+        await event.save();
+
+        return res.status(200).json({
+            message: "YouTube link updated successfully",
+            data: event,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+const addImages = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        const { imagesArray } = req.body;
+
+        if (
+            !Array.isArray(imagesArray) ||
+            imagesArray.some((image) => typeof image !== "string")
+        ) {
+            return res
+                .status(400)
+                .json({ message: "Invalid imagesArray data" });
+        }
+
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        event.imagesArray = event.imagesArray.concat(imagesArray);
+
+        await event.save();
+
+        return res
+            .status(200)
+            .json({ message: "Images added successfully", data: event });
+    } catch (error) {
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+const deleteImages = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        const { imageUrls } = req.body;
+
+        if (
+            !Array.isArray(imageUrls) ||
+            imageUrls.some((url) => typeof url !== "string")
+        ) {
+            return res.status(400).json({ message: "Invalid imageUrls data" });
+        }
+
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        event.imagesArray = event.imagesArray.filter(
+            (image) => !imageUrls.includes(image)
+        );
+
+        await event.save();
+
+        return res
+            .status(200)
+            .json({ message: "Images deleted successfully", data: event });
+    } catch (error) {
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+const getImagesArray = async (req, res) => {
+    try {
+        const eventId = req.params.id;
+        const event = await Event.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ error: "Event not found" });
+        }
+
+        const page = parseInt(req.query.page) || 1; 
+        const pageSize = parseInt(req.query.pageSize) || 9; 
+
+        const startIndex = (page - 1) * pageSize;
+
+        const paginatedImages = event.imagesArray.slice(startIndex, startIndex + pageSize);
+
+        return res.status(200).json({
+            imagesArray: paginatedImages,
+            currentPage: page,
+            totalPages: Math.ceil(event.imagesArray.length / pageSize),
+            imagesPerPage: pageSize
+        });
+    } catch (error) {
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+const addWatermarkInImages = async (req, res) => {
+    try {
+        const { imagesArray, watermarkUrl } = req.body;
+        const eventId = req.params.id;
+    
+        if (!Array.isArray(imagesArray) || typeof watermarkUrl !== 'string') {
+          return res.status(400).json({ error: 'Invalid input data' });
+        }
+    
+        const watermarkedImagesArray = [];
+    
+        for (const imageUrl of imagesArray) {
+          const watermarkedImage = await addWatermarkToImage(imageUrl, watermarkUrl);
+          watermarkedImagesArray.push(watermarkedImage);
+        }
+    
+        // Update the event's imagesArray in the database
+        const event = await Event.findById(eventId);
+    
+        if (!event) {
+          return res.status(404).json({ error: 'Event not found' });
+        }
+    
+        // Update the imagesArray with the watermarked images
+        event.imagesArray = watermarkedImagesArray;
+    
+        // Save the updated event
+        await event.save();
+    
+        return res.status(200).json({ message: 'Watermark added successfully', data: event });
+      } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+};
+
+async function addWatermarkToImage(imageUrl, watermarkUrl) {
+    try {
+      const originalImage = await Jimp.read(imageUrl);
+      const watermark = await Jimp.read(watermarkUrl);
+  
+      // Resize the watermark to fit a percentage of the original image
+      watermark.resize(originalImage.getWidth() * 0.2, Jimp.AUTO);
+  
+      // Calculate the position to place the watermark (e.g., bottom right corner)
+      const x = originalImage.getWidth() - watermark.getWidth() - 10;
+      const y = originalImage.getHeight() - watermark.getHeight() - 10;
+  
+      // Compose the images by overlaying the watermark
+      originalImage.composite(watermark, x, y, {
+        mode: Jimp.BLEND_SOURCE_OVER,
+        opacitySource: 0.5, // Adjust the watermark opacity as needed
+      });
+  
+      // Convert the image to base64
+      const base64data = await originalImage.getBase64Async(Jimp.AUTO);
+      const img = await imgResize(base64data)
+      return img.toString();
+    } catch (error) {
+      throw new Error(`Error adding watermark: ${error.message}`);
+    }
+  }
+  
+
+
 module.exports = {
     getEvents,
     getEvent,
@@ -249,4 +517,12 @@ module.exports = {
     addSubEvent,
     getSubEvent,
     deleteSubEvent,
+    addYoutubeLinks,
+    getYoutubeLinks,
+    updateYoutubeLinks,
+    deleteYoutubeLinks,
+    addImages,
+    deleteImages,
+    getImagesArray,
+    addWatermarkInImages,
 };

@@ -12,6 +12,14 @@ const {
   addSubEvent,
   getSubEvent,
   deleteSubEvent,
+  addYoutubeLinks,
+  getYoutubeLinks,
+  updateYoutubeLinks,
+  deleteYoutubeLinks,
+  addImages,
+  deleteImages,
+  getImagesArray,
+  addWatermarkInImages
 } = require("../controller/eventController");
 
 // Get all events
@@ -41,4 +49,27 @@ router.delete("/subevent/:id", middleware, deleteSubEvent);
 // Delete a event
 router.delete("/event/:id", deleteEvent);
 
+
+// Update youtube links 
+router.put("/event/:id/youtube-links/:linkId", middleware, updateYoutubeLinks);
+
+// Add youtube links
+router.post("/event/:id/youtube-links", middleware, addYoutubeLinks);
+
+// Get youtube links
+router.get("/event/:id/youtube-links", middleware, getYoutubeLinks);
+
+// Delete youtube links
+router.delete("/event/:id/youtube-links/:linkId", middleware, deleteYoutubeLinks);
+
+router.get("/event/:id/event-images", middleware, getImagesArray);
+
+router.post("/event/:id/event-images", middleware, addImages);
+
+router.put("/event/:id/event-images/add-watermark", middleware, addWatermarkInImages);
+
+router.delete("/event/:id/event-images", middleware, deleteImages);
+
+
 module.exports = router;
+

@@ -30,6 +30,16 @@ const eventSchema = new mongose.Schema({
             ref : "event"
         }
     ],
+    fullAccess:{
+        accessStatus:{type:Boolean, default :false},
+        qrCode:{type:String},
+        link:{type:string},
+    },
+    faceSearch:{
+        accessStatus:{type:Boolean, default :false},
+        qrCode:{type:String},
+        link:{type:string},
+    },
     qrCode :{
         type : String
     },
@@ -43,6 +53,22 @@ const eventSchema = new mongose.Schema({
     imagesArray : [
         {
             type : String
+        }
+    ],
+    videoLinks : [
+        {
+            title : {
+                type : String
+            },
+            link : {
+                type : String
+            },
+            description :{
+                type : String
+            },
+            thumbnail : {
+                type : String
+            }
         }
     ],
     waterMarks : [
@@ -135,8 +161,6 @@ const eventSchema = new mongose.Schema({
     pinRequired : {
         type : Boolean
     },
-
-
     // Settings
     faceSearch : {
         type : Boolean
