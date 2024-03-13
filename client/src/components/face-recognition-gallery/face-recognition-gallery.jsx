@@ -1,9 +1,67 @@
 import './face-recognition-gallery.css'
 import Switch from '@mui/material/Switch';
-import { useState } from 'react';
+import React, { useState } from "react";
 import { MdOutlineArrowBackIosNew } from 'react-icons/md';
 import { FiSettings } from 'react-icons/fi';
 import dummyImg from '../../assets/fr-gallery-dummyimg.jpg'
+
+
+const WhatsAppMessenger = () => {
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const handleOpenWhatsApp = () => {
+    const cleanedPhoneNumber = phoneNumber.replace(/\D/g, "");
+
+    if (cleanedPhoneNumber && /^\d+$/.test(cleanedPhoneNumber)) {
+      const whatsappLink = `https://wa.me/${cleanedPhoneNumber}`
+
+      try {
+        // Open WhatsApp link in a new tab/window
+        const newWindow = window.open(whatsappLink, "_blank");
+
+        // Check if the new window was successfully opened
+        if (
+          !newWindow ||
+          newWindow.closed ||
+          typeof newWindow.closed === "undefined"
+        ) {
+          // Display a message suggesting to install the WhatsApp app
+          alert(
+            "WhatsApp web is blocked. Please consider installing the WhatsApp app."
+          );
+        }
+      } catch (error) {
+        // Handle the specific error when api.whatsapp.com is blocked
+        if (error.message.includes("refused to connect")) {
+          alert(
+            "WhatsApp web is blocked. Please consider installing the WhatsApp app."
+          );
+        } else {
+          // Handle other errors if needed
+          console.error("Error opening WhatsApp link:", error);
+        }
+      }
+    } else {
+      alert("Please enter a valid phone number.");
+    }
+  };
+
+  return (
+    <div>
+      <h1>WhatsApp Messenger</h1>
+      <label htmlFor="phoneNumber">Enter WhatsApp Number:</label>
+      <input
+        type="text"
+        id="phoneNumber"
+        value={phoneNumber}
+        onChange={(e) => setPhoneNumber(e.target.value)}
+      />
+
+      <button onClick={handleOpenWhatsApp}>Open WhatsApp</button>
+    </div>
+  );
+};
+
 
 const FaceRecognitionGallery = () => {
   const [form, setForm] = useState({
@@ -16,6 +74,8 @@ const FaceRecognitionGallery = () => {
     setForm({ ...form, [event.target.name]: event.target.checked });
     console.log(event.target.name, event.target.checked)
   };
+
+
 
   return (
     <div className="fr-gallery-wrapper">
@@ -172,9 +232,7 @@ const FaceRecognitionGallery = () => {
                 <p>copy link</p>
               </section>
               <section>
-                <div>
-                  Whatsapp Number
-                </div>
+                <WhatsAppMessenger/>
                 <div>
                   <textarea />
                 </div>
