@@ -12,6 +12,8 @@
 }
 
 .modal-content {
+  width: 80%;
+  height: auto;
   background-color: white;
   display: flex;
   border-radius: 5px;
