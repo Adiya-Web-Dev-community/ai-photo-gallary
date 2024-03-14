@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -7,8 +8,42 @@ import axios from "../../helpers/axios";
 import "./event-access-form.css";
 
 const EventAccessForm = () => {
-  const { id } = useParams();
   const dispatch = useDispatch();
+  const { id } = useParams();
+  const [pin, setPin] = useState("");
+  const navigate = useNavigate();
+  const [data, setData] = useState({});
+
+  //fetch event details
+  const fetchEventDetails = async (id) => {
+    try {
+      const resp = await axios.get(`/event/${id}`);
+      console.log(resp.data.data);
+      setData(resp.data.data);
+    } catch (error) {
+      console.error("Error fetching event details:", error);
+    }
+  };
+
+  const validatePin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `/${eventData.eventName}/event-access/${id}`,
+        { pin }
+      );
+      if (response.data.success) {
+        // If PIN is valid, navigate to the show event data page
+        navigate(`/show-event-data/${id}`);
+      }
+    } catch (error) {
+      toast.error("Invalid PIN. Please try again.");
+    }
+  };
+
+  useEffect(() => {
+    fetchEventDetails(id);
+  }, [id]);
 
   const [eventData, setEventData] = useState(null);
   const [formData, setFormData] = useState({
@@ -157,6 +192,44 @@ const EventAccessForm = () => {
     }
   }, [step, showForm]);
 
+  if (!data?.faceSearchAccess) {
+    return (
+      <div
+        className="private-container"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        <h1
+          style={{
+            fontSize: "1.7rem",
+            fontWeight: "800",
+            marginBottom: "1rem",
+          }}
+        >
+          This Event is Private
+        </h1>
+        <h2
+          style={{
+            fontSize: "1.5rem",
+            marginBottom: "2rem",
+          }}
+        >
+          Cannot Access this Event without Admin's Permission
+        </h2>
+        <h3
+          style={{
+            fontSize: "1.2rem",
+          }}
+        >
+          Thank you
+        </h3>
+      </div>
+    );
+  }
+  
   return (
     <div className="event-form-container ">
       <div className="event-form-left">

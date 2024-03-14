@@ -548,6 +548,7 @@ const sendEmails = async (req, res) => {
 };
 
 const pinValidate = async (req, res) => {
+    console.log(req.body)
     try {
         console.log(req.params.id)
         const eventId = req.params.id;
@@ -562,11 +563,11 @@ const pinValidate = async (req, res) => {
         }
         if (event.pin === req.body.pin) {
             return res.status(200).json({
+                success: true,
                 message: "Pin validated successfully",
                 data: {
                     eventName: event.eventName,
                     eventId: eventId,
-                    endPoint: `/event/:${event.eventName}/show-all/:${event._id}`
                 },
             });
         } else {

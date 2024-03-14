@@ -18,6 +18,8 @@ import FullEventForm from "./components/FullEventAccess/FullEventForm/FullEventF
 import Event from "./components/FullEventAccess/Events/Event";
 import EventAccessForm from "./components/event-access-form/event-access-form"
 
+
+
 function App() {
   return (
     <Provider store={store}>
@@ -46,7 +48,7 @@ function App() {
             element={<FullEventForm />}
           />
           <Route path="/show-event-data/:eventId" element={<Event />} />
-          {/* face search */}
+           {/* face search */}
           <Route
             path="/face-search/event/:eventId"
             element={<EventAccessForm />}
