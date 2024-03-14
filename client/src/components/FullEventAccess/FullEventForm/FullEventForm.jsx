@@ -14,7 +14,7 @@ const FullEventForm = () => {
   const fetchEventDetails = async (eventId) => {
     try {
       const resp = await axios.get(`/event/${eventId}`);
-      console.log(resp.data.data);
+      console.log("data", resp.data.data);
       setEventData(resp.data.data);
     } catch (error) {
       console.error("Error fetching event details:", error);
@@ -23,10 +23,11 @@ const FullEventForm = () => {
 
   const validatePin = async (e) => {
     e.preventDefault();
+    console.log();
     try {
       const response = await axios.post(
-        `${eventData.eventName}/event-access/${eventId}`,
-        { pin }
+        `/${eventData.eventName}/event-access/${eventId}`,
+        pin
       );
       if (response.data.success) {
         // If PIN is valid, navigate to the show event data page
