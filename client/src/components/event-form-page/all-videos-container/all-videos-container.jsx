@@ -54,7 +54,7 @@ const AllVideosContainer = ({ eventData, getEventDetails,onClick }) => {
         <strong>Description</strong> {el.description?.length > 40 ? el.description.substring(0, 40) + '...' : el.description}
       </p>
       <a href={el.link} style={{ marginBottom: '5px', display: 'block' }}>
-        <strong>Link-></strong> 
+        <strong>Link</strong> 
 
         {el.link?.length > 40 ? el.link.substring(0, 40) + '...' : el.description}
       </a>

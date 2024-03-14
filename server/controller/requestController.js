@@ -355,7 +355,4 @@ module.exports = {
   eventType,
   validatePin,
   addImageForFaceRec,
-
-  //
-  fullAccessValidatePin
 };
