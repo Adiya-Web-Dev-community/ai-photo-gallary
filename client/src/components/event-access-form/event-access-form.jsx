@@ -75,21 +75,21 @@ const EventAccessForm = () => {
       pin: formData.pin,
     };
 
-    axios
-      .post(`/event/request/${id}`, formattedFormData)
-      .then((res) => {
-        console.log(res);
-        if (res.data.success) {
-          toast.success(res.data.message);
-          setShowForm(false);
-          setStep(2);
-        } else {
-          toast.error(res.message);
-        }
-      })
-      .catch((error) => {
-        toast.error("PIN Required");
-      });
+    //   axios
+    //     .post(`/event/request/${id}`, formattedFormData)
+    //     .then((res) => {
+    //       console.log(res);
+    //       if (res.data.success) {
+    //         toast.success(res.data.message);
+    //         setShowForm(false);
+    //         setStep(2);
+    //       } else {
+    //         toast.error(res.message);
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       toast.error("PIN Required");
+    //     });
   };
 
   const captureImage = () => {
@@ -133,6 +133,7 @@ const EventAccessForm = () => {
   //       console.error("No image data captured yet.");
   //     }
   //   };
+
   const handleFaceCapture = () => {
     if (imageData && formData.email) {
       const requestData = {
